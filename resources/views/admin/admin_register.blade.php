@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
+    <title>Admin</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -44,49 +44,51 @@
         <!-- Spinner End -->
 
 
-        <!-- Sign In Start -->
+        <!-- Sign Up Start -->
         <div class="container-fluid">
             <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h3>Sign In</h3>
+                            <a href="index.html" class="">
+                                <h3 class="text-primary"><i class="fa fa-user-circle-o me-2"></i>YFJ</h3>
+                            </a>
+                            
+                            <h6 class="d-flex align-items-left">Create a new account</h6>
                         </div>
-                        @if(Session::has('error'))
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <strong>{{session::get('error')}}</strong>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                         @endif
-                        <form action="{{route('admin.login')}}" class="" method="post">
-                            @csrf
+                        <form action="{{route('admin.register.create')}}" class='' method='post'>
+                        @csrf
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control"  name="email" placeholder="name@example.com">
+                            <input type="text" class="form-control" name="user" placeholder="Username">
+                            <label for="user">Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" name="email" placeholder="name@example.com">
                             <label for="email">Email address</label>
                         </div>
                         <div class="form-floating mb-4">
-                       
-                            <input type="password" class="form-control"  name="password" placeholder="Password">
-                            <label for="password">Password  </label>
-                            <!-- <i class="far fa-eye" id="togglePassword"></i> -->
+                            <input type="password" class="form-control" name="passowrd"  placeholder="Password">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" name="password_confirmation" placeholder="ConfirmPassword">
+                            <label for="password">Confirm Password</label>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label" for="exampleCheck1">Remember me</label>
-                            </div>
-                            <a href="">Forgot Password</a>
+                            <input type="checkbox" class="form-check-input" >
+                            <label class="form-check-label" for="exampleCheck1">remember me</label>
                         </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                        <p class="text-center mb-0">Don't have an Account? <a href="{{route('admin.register')}}">Sign Up</a></p>
-                        </form>
+                        <a href="">Forgot Password</a>
                     </div>
+                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                    <p class="text-center mb-0">Already have an Account? <a href="">Sign In</a></p>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- Sign In End -->
+    </div>
+    <!-- Sign Up End -->
     </div>
 
     <!-- JavaScript Libraries -->
