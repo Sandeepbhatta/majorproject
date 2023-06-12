@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 use Auth;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 
@@ -27,14 +26,14 @@ class AdminController extends Controller
         // dd($request->all());
          $check = $request->all();
          if(auth::guard('admin')->attempt(['email'=> $check['email'], 'password'=> $check['password']])){
-            return redirect()->route('admin.dashboard')->with('error','admin login successfully');
+            return redirect()->route('admin.dashboard')->with('error','superadmin login successfully');
          }else{
                 return back()->with('error','invalid email or password');
             }
     }//end method
     public function Logout(){
         Auth::guard('admin')->logout();
-        return  redirect()->route('login_form')->with('error','admin logout successfully');
+        return  redirect()->route('login_form')->with('error','logout successfully');
     }//end method
     public function Register(){
         // Auth::guard('admin')->logout();

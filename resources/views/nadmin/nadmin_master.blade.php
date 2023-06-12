@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>SuperAdmin panel</title>
+    <title>Admin Panel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -52,7 +52,7 @@
                         </div>
                         <div class="ms-3">
                             <h6 class="mb-0">Jhon Doe</h6>
-                            <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span>
+                            <span>Admin: </span>
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
@@ -144,13 +144,13 @@
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
-                            <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
+                            <a href="{{route('nadmin.logout')}}" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
             </nav>
             <!-- Navbar End -->
-            @yield('admin') 
+            @yield('nadmin') 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded-top p-4">

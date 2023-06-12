@@ -60,7 +60,7 @@
                                 </button>
                             </div>
                          @endif
-                        <form action="{{route('admin.login')}}" class="" method="post">
+                        <form action="{{route('nadmin.login')}}" class="" method="post">
                             @csrf
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control"  name="email" placeholder="name@example.com">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NadminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,7 @@ use App\Http\Controllers\AdminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-/*---------------admin route--------------*/
+/*---------------superadmin route--------------*/
 Route::prefix('admin')->group(function(){
 
     Route::get('/login',[AdminController::class, 'Index'])->name('login_form');
@@ -29,9 +30,29 @@ Route::prefix('admin')->group(function(){
 
 
 
-
-
 /*---------------endadmin route--------------*/
+
+
+/*--------------Nadmin route--------------*/
+Route::prefix('nadmin')->group(function(){
+
+    Route::get('/login',[NadminController::class, 'NadminIndex'])->name('nadmin_login_form');
+    Route::get('/dashboard',[NadminController::class, 'NadminDashboard'])->name('nadmin.dashboard');
+
+    Route::post('/login/owner',[NadminController::class, 'NadminLogin'])->name('nadmin.login');
+    // Route::get('/dashboard',[NadminController::class, 'Dashboard'])->name('admin.dashboard')->middleware('admin');
+    Route::get('/logout',[NadminController::class, 'NadminLogout'])->name('nadmin.logout')->middleware('Nadmin');
+    Route::get('/register',[NadminController::class, 'Register'])->name('admin.register');
+    Route::post('/register/create',[NadminController::class, 'RegisterCreate'])->name('admin.register.create');
+
+
+});
+
+
+
+
+
+/*---------------endNadmin route--------------*/
 
 Route::get('/', function () {
     return view('welcome');
