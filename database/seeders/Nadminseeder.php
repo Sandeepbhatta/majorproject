@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Nadmin;
+use App\Models\Admin;
 class Nadminseeder extends Seeder
 {
     /**
@@ -14,6 +14,6 @@ class Nadminseeder extends Seeder
      */
     public function run()
     {
-        Nadmin::factory(1)->create();
+        Admin::factory(1)->create();
     }
 }

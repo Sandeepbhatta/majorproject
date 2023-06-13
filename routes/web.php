@@ -25,28 +25,11 @@ Route::prefix('admin')->group(function(){
     Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
     Route::post('/register/create',[AdminController::class, 'RegisterCreate'])->name('admin.register.create');
 
-
 });
-
 
 
 /*---------------endadmin route--------------*/
 
-
-/*--------------Nadmin route--------------*/
-Route::prefix('nadmin')->group(function(){
-
-    Route::get('/login',[NadminController::class, 'NadminIndex'])->name('nadmin_login_form');
-    Route::get('/dashboard',[NadminController::class, 'NadminDashboard'])->name('nadmin.dashboard');
-
-    Route::post('/login/owner',[NadminController::class, 'NadminLogin'])->name('nadmin.login');
-    // Route::get('/dashboard',[NadminController::class, 'Dashboard'])->name('admin.dashboard')->middleware('admin');
-    Route::get('/logout',[NadminController::class, 'NadminLogout'])->name('nadmin.logout')->middleware('Nadmin');
-    Route::get('/register',[NadminController::class, 'Register'])->name('admin.register');
-    Route::post('/register/create',[NadminController::class, 'RegisterCreate'])->name('admin.register.create');
-
-
-});
 
 
 

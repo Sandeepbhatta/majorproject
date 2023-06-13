@@ -28,7 +28,8 @@ class AdminController extends Controller
          if(auth::guard('admin')->attempt(['email'=> $check['email'], 'password'=> $check['password']])){
             return redirect()->route('admin.dashboard')->with('error','superadmin login successfully');
          }else{
-                return back()->with('error','invalid email or password');
+            $error = 'Invalid email or password';
+            return view('admin.admin_login',compact('error'));
             }
     }//end method
     public function Logout(){
@@ -42,14 +43,17 @@ class AdminController extends Controller
     public function RegisterCreate(Request $request){
         // Auth::guard('admin')->logout();
         // dd($request->all());\
-
+        $password = $request->password;
         Admin::insert([
             'name' => $request->user,
             'email'=> $request->email,
-            'password'=> Hash::make($request->password),
+            'password'=> bcrypt($password),
             'created_at'=> Carbon::now(),
+            'email_verified_at'=> Carbon::now(),
         ]);
-        return  redirect()->route('login_form')->with('error','account created successfully');
+        $error = 'account created successfully';
+        return view('admin.admin_login',compact('error'));
+        
     }//end method
 }
 
