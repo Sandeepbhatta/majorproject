@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('nadmins', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->tinyInteger('status')->default(1); 
+            $table->date('booking_date');
+            $table->string('price')->default('null');
+            $table->tinyInteger('booking_status')->default(0);
+            $table->tinyInteger('price_status');
+            $table->string('booking_type');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nadmins');
+        Schema::dropIfExists('bookings');
     }
 };

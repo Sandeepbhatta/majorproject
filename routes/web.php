@@ -3,8 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\NadminController;
-
+use App\Http\Controllers\bookingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,8 +14,14 @@ use App\Http\Controllers\NadminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+
 /*---------------superadmin route--------------*/
+Route::get('/',[AdminController::class, 'Index'])->name('login_form');
+// 
 Route::prefix('admin')->group(function(){
+    
 
     Route::get('/login',[AdminController::class, 'Index'])->name('login_form');
     Route::post('/login/owner',[AdminController::class, 'Login'])->name('admin.login');
@@ -28,18 +33,18 @@ Route::prefix('admin')->group(function(){
 });
 
 
-/*---------------endadmin route--------------*/
+/*---------------User route--------------*/
+
+
+ 
 
 
 
+/*---------------User route--------------*/
 
-
-
-/*---------------endNadmin route--------------*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -50,5 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');
+Route::get('/booking/create',[BookingController::class, 'create'])->name('booking.create');
+Route::post('/booking',[BookingController::class, 'store'])->name('booking.store');
+
+
 
 require __DIR__.'/auth.php';
