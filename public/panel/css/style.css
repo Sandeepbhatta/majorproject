@@ -287,3 +287,10 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }

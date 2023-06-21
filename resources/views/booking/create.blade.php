@@ -150,35 +150,35 @@
                                 <div class="modal-body ">
                                     <div class="form-group md-4">
                                         <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}">
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;>
                                         @error('name')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="name" class="form-label">Booking Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror"   name="date" placeholder="Date" value="{{old('date')}}">
+                                        <label for="booking" class="form-label">Booking Date</label>
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="name" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror"   name="sdate" placeholder="Date" value="{{old('sdate')}}">
+                                        <label for="start" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="name" class="form-label">End Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror"   name="edate" placeholder="Date" value="{{old('edate')}}">
+                                        <label for="end" class="form-label">End Date</label>
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-1  "  >
                                         <label for ="form" class="form-label">Advance Payment</label>
-                                        <select class="form-control" name="type" >
+                                        <select class="form-control" name="price_status" >
                                         <option disabled selected>Choose One</option>
                                         <option value="yes">Yes</option>
                                         <option value="no">No</option>
@@ -186,7 +186,7 @@
                                     </div>  
                                     <div class="form-group md-3 " >
                                         <label for ="form" class="form-label">Package Type</label>
-                                        <select class="form-control" name="Type" >
+                                        <select class="form-control" name="booking_type" >
                                         <option disabled selected>Choose Package</option>
                                         <option value="wedding">Wedding</option>
                                         <option value="babyshower">Baby Shower</option>
@@ -209,9 +209,9 @@
                     </form>
             <!-- pop up model end -->
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4 ">
                 <div class="bg-secondary rounded-top p-4">
-                    <div class="row">
+                    <div class="row mt-6">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
                             &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
                         </div>

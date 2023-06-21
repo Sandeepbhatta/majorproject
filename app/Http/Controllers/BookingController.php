@@ -9,7 +9,9 @@ class BookingController extends Controller
 {
     //
     public function index(){
-        return view('booking.booking');
+        $booking = Bookings::orderBy('id','Asc')->paginate(2);
+
+        return view('booking.booking',['bookings'=> $booking]);
     }
     public function create()
     {
@@ -18,27 +20,68 @@ class BookingController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
             'name' => ['required', 'string'],
-            'date' => ['required', 'date'],
-            'Payment' => 'required',
-            'package' => 'required',
-            'sdate' => 'required',
-            'edate' => 'required',
+            'booking_date' => ['required', 'date'],
+            'price_status' => 'required',
+            'booking_type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
         ]);
         if($validator->passes()){
             // echo "success";
-            $booking = new Booking();
+            $booking = new Bookings();
             $booking -> name = $request->name;
-            $booking -> booking_date = $request->date;
-            $booking -> price_status = $request->Payment;
-            $booking -> booking_type = $request->package;
-            $booking -> start_date = $request->sdate;
-            $booking -> end_date = $request->edate;
+            $booking -> booking_date = $request->booking_date;
+            $booking -> price_status = $request->price_status;
+            $booking -> booking_type = $request->booking_type;
+            $booking -> start_date = $request->start_date;
+            $booking -> end_date = $request->end_date;
             $booking -> save();
             $request->session()->flash('success','Booking Added Successfully!');
             return redirect()->route('booking.index');
         }else{
             return redirect()->route('booking.create')->withErrors($validator)->withInput();
         }
+    }
+    public function edit($id){
+        $booking=Bookings::findorfail($id);
+        // if(!$booking){
+        //     abort('404');
+        // }
+
+        return view('booking.edit',['booking'=>$booking]);
+    }
+    public function update($id, Request $request){
+        $validator = Validator::make($request->all(),[
+            'name' => ['required', 'string'],
+            'booking_date' => ['required', 'date'],
+            'price_status' => 'required',
+            'booking_type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+        if($validator->passes()){
+            // echo "success";
+            $booking = Bookings::find($id);
+            $booking -> name = $request->name;
+            $booking -> booking_date = $request->booking_date;
+            $booking -> price_status = $request->price_status;
+            $booking -> booking_type = $request->booking_type;
+            $booking -> start_date = $request->start_date;
+            $booking -> end_date = $request->end_date;
+            $booking -> save();
+            $request->session()->flash('success','Booking Added Successfully!');
+            return redirect()->route('booking.index');
+        }else{
+            return redirect()->route('booking.edit',$id)->withErrors($validator)->withInput();
+        }
+
+    }
+    public function destroy($id, Request $request)
+    {
+        $user->delete();
+    
+        return redirect()->route('user.index')
+                        ->with('success','User deleted successfully');
     }
     
     // /**

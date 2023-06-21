@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->date('booking_date');
-            $table->string('price')->default('null');
+            $table->string('price')->nullable();
             $table->tinyInteger('booking_status')->default(0);
-            $table->tinyInteger('price_status');
+            $table->string('price_status');
             $table->string('booking_type');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
