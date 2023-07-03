@@ -3,7 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\bookingController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PackageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +19,7 @@ use App\Http\Controllers\bookingController;
 
 
 /*---------------superadmin route--------------*/
-Route::get('/',[AdminController::class, 'Index'])->name('login_form');
+Route::get('/',[AdminController::class, 'Index']);
 // 
 Route::prefix('admin')->group(function(){
     
@@ -29,6 +30,7 @@ Route::prefix('admin')->group(function(){
     Route::get('/logout',[AdminController::class, 'Logout'])->name('admin.logout')->middleware('admin');
     Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
     Route::post('/register/create',[AdminController::class, 'RegisterCreate'])->name('admin.register.create');
+    //category route
 
 });
 
@@ -55,13 +57,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+//booking route
 Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');
 Route::get('/booking/create',[BookingController::class, 'create'])->name('booking.create');
 Route::post('/booking',[BookingController::class, 'store'])->name('booking.store');
 Route::get('/booking/{booking}/edit',[BookingController::class, 'edit'])->name('booking.edit');
 Route::put('/booking/{booking}',[BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/{booking}',[BookingController::class, 'destroy'])->name('booking.destroy');
+
+
+//package route
+Route::get('/package',[PackageContorller::class, 'index'])->name('package.index');
+Route::get('/package/create',[PackageContorller::class, 'create'])->name('package.create');
+Route::post('/package',[PackageContorller::class, 'store'])->name('package.store');
+Route::get('/package/{package}/edit',[PackageContorller::class, 'edit'])->name('package.edit');
+Route::put('/package/{package}',[PackageContorller::class, 'update'])->name('package.update');
+Route::delete('/package/{package}',[PackageContorller::class, 'destroy'])->name('package.destroy');
 
 
 

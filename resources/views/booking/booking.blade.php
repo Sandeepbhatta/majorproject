@@ -60,9 +60,9 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                        <a href="" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -130,7 +130,7 @@
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
+                            <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,12 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                    <a href="{{route('booking.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3">Add Booking</a> 
+                  <div class="flex justify-end">
+                  <a href="{{route('booking.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a> 
+
+                  </div>
+
+                  
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -174,10 +179,11 @@
                                         <td scope="col">{{ $booking->end_date}} </td>
                                         <td>
                                             <a href="{{ route('booking.edit',$booking->id) }}" class="btn btn-info" >Edit</a>
-                                            <a href="#" onClick="deletebooking({{$booking->id}})" class="btn btn-primary">Delete</a>
-                                            <form action="{{route('booking.destroy',$booking->id)}}" method="post">
+                                            <a href="#" onClick="deleteBooking({{$booking->id}})" class="btn btn-primary">Delete</a>
+                                            <form id="booking-edit-action-{{$booking->id}}" action="{{route('booking.destroy',$booking->id)}}" method="post">
                                                 @csrf
-                                                @method("delete")
+                                                @method('DELETE')
+                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
                                             </form>
                                         </td>
                                     </tr>
@@ -238,6 +244,8 @@
 </html>
 <script>
     function deleteBooking(id){
-        if(confirm("are you sure you want to delete?"))
+        if(confirm("Are you sure you want to delete?")){
+           document.getElementById('booking-edit-action-' + id).submit(); 
+        }
     }
 </script>

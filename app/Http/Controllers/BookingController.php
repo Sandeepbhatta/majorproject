@@ -69,7 +69,7 @@ class BookingController extends Controller
             $booking -> start_date = $request->start_date;
             $booking -> end_date = $request->end_date;
             $booking -> save();
-            $request->session()->flash('success','Booking Added Successfully!');
+            $request->session()->flash('success','Booking Edited Successfully!');
             return redirect()->route('booking.index');
         }else{
             return redirect()->route('booking.edit',$id)->withErrors($validator)->withInput();
@@ -78,10 +78,12 @@ class BookingController extends Controller
     }
     public function destroy($id, Request $request)
     {
-        $user->delete();
-    
-        return redirect()->route('user.index')
-                        ->with('success','User deleted successfully');
+        $booking = Bookings::findOrfail($id);
+        $booking->delete();
+        //File::delete(public_path().'/uploads/booking'.$booking->image);
+        // $request->session()->flash('success','Booking Deleted successfully');
+        return redirect()->route('booking.index')
+                        ->with('success','Booking deleted successfully');
     }
     
     // /**

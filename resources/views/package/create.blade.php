@@ -60,8 +60,8 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="index.html" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Pacakge</a>
-                        <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -139,12 +139,12 @@
             <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-                    <form action="{{route('booking.store')}}" method="post">
+                    <form action="{{route('package.store')}}" method="post">
                         @csrf
                         <div class="modal-dialog " >
                             <div class="modal-content ">
                                 <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
+                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create Package</h5>
                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
                                 <div class="modal-body ">
@@ -156,7 +156,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="booking" class="form-label">Booking Date</label>
+                                        <label for="package" class="form-label">Booking Date</label>
                                         <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
@@ -202,7 +202,7 @@
                                     <input type="file" id="imageUpload" name="imageUpload">                                    -->
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="{{route('booking.index')}}" class="btn btn-secondary">Back</a>
+                                    <a href="{{route('package.index')}}" class="btn btn-secondary">Back</a>
                                     <button class="btn btn-primary">Save</button>
                                 </div>
                             </div>

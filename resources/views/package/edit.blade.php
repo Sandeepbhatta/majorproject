@@ -60,7 +60,7 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="index.html" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Pacakge</a>
+                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
@@ -139,39 +139,40 @@
             <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-                    <form action="{{route('booking.store')}}" method="post">
+                    <form action="{{route('package.update',$package->id)}}" method="post">
                         @csrf
+                        @method('put')
                         <div class="modal-dialog " >
                             <div class="modal-content ">
                                 <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
+                                    <h5 class="modal-title" id="model-title" style="Color:Black">Edit Package</h5>
                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
                                 <div class="modal-body ">
                                     <div class="form-group md-4">
                                         <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name',$booking->name)}}" style="background:white;">
                                         @error('name')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="booking" class="form-label">Booking Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
+                                        <label for="package" class="form-label">Pacakage Date</label>
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date',$booking->booking_date)}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="start" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('start_date',$booking->start_date)}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="end" class="form-label">End Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
+                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('end_date',$booking->end_date)}}" style="background:white;">
                                         @error('date')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
@@ -198,11 +199,10 @@
                                         </select>
                                         <!-- <span id="typeError" class="text-danger"></span> -->
                                     </div>
-                                    <!-- <label for="imageUpload">Upload Image:</label>
-                                    <input type="file" id="imageUpload" name="imageUpload">                                    -->
+                                    
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="{{route('booking.index')}}" class="btn btn-secondary">Back</a>
+                                    <a href="{{route('package.index')}}" class="btn btn-secondary">Back</a>
                                     <button class="btn btn-primary">Save</button>
                                 </div>
                             </div>

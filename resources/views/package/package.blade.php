@@ -30,8 +30,9 @@
 
 
 </head>
+
 <body>
-<div class="container-fluid position-relative d-flex p-0">
+    <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -59,8 +60,8 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="index.html" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Pacakge</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
@@ -135,85 +136,75 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            <!-- Modal -->
-            <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
-               <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-                    <form action="{{route('booking.store')}}" method="post">
-                        @csrf
-                        <div class="modal-dialog " >
-                            <div class="modal-content ">
-                                <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
-                                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                                </div>
-                                <div class="modal-body ">
-                                    <div class="form-group md-4">
-                                        <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;>
-                                        @error('name')
-                                        <p class="invalid-feeback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="booking" class="form-label">Booking Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="start" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="end" class="form-label">End Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-1  "  >
-                                        <label for ="form" class="form-label">Advance Payment</label>
-                                        <select class="form-control" name="price_status" >
-                                        <option disabled selected>Choose One</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                        </select>
-                                    </div>  
-                                    <div class="form-group md-3 " >
-                                        <label for ="form" class="form-label">Package Type</label>
-                                        <select class="form-control" name="booking_type" >
-                                        <option disabled selected>Choose Package</option>
-                                        <option value="wedding">Wedding</option>
-                                        <option value="babyshower">Baby Shower</option>
-                                        <option value="weaning">Weanig</option>
-                                        <option value="exhibition">Exhibition</option>
-                                        <option value="fair">Fair</option>
-                                        <option value="musicfestival">Music festival</option>
-                                        <option value="Cevent">Corporate Event</option>
-                                        </select>
-                                        <!-- <span id="typeError" class="text-danger"></span> -->
-                                    </div>
-                                    <!-- <label for="imageUpload">Upload Image:</label>
-                                    <input type="file" id="imageUpload" name="imageUpload">                                    -->
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="{{route('booking.index')}}" class="btn btn-secondary">Back</a>
-                                    <button class="btn btn-primary">Save</button>
-                                </div>
+
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-14">
+                    <a href="{{route('package.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3">Add Pacakge</a> 
+                    <div class="col-sm-12 ">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                {{Session::get('success')}}
                             </div>
+                            @endif
+                            <h6 class="mb-4">Package List</h6>
+                            <table class="table table-hover" id="package-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Booking Date</th>
+                                        <th scope="col">AD Payment Status</th>
+                                        <th scope="col">Package</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    @if( $packages->isNOtEmpty() )
+                                    @foreach( $packages as $package )
+                                    <tr>
+                                        <td scope="col">{{ $package->id }}</td>
+                                        <td scope="col">{{ $package->name }}</td>
+                                        <td scope="col">{{ $package->package_date }}</td>
+                                        <td scope="col">{{ $package->price_status }}</td>
+                                        <td scope="col">{{ $package->package_type }}</td>
+                                        <td scope="col">{{ $package->start_date}}</td>
+                                        <td scope="col">{{ $package->end_date}} </td>
+                                        <td>
+                                            <a href="{{ route('package.edit',$package->id) }}" class="btn btn-info" >Edit</a>
+                                            <a href="#" onClick="deletepackage({{$package->id}})" class="btn btn-primary">Delete</a>
+                                            <form id="package-edit-action-{{$package->id}}" action="{{route('package.destroy',$booking->id)}}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    
+                                    @else
+                                    <tr>
+                                        <tdcolspan="6">Record Not Found</td>
+                                    </tr>
+
+                                    @endif
+                                </thead>
+                            </table>
                         </div>
-                    </form>
-            <!-- pop up model end -->
+                        <div class="mt-3">
+                            {{ $packages->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4 ">
-                <div class="bg-secondary rounded-top p-4">
-                    <div class="row mt-6">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                <div class="bg-secondary rounded-top p-4 mt-3">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start ">
                             &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
@@ -246,3 +237,10 @@
 </body>
 
 </html>
+<script>
+    function deletePackage(id){
+        if(confirm("Are you sure you want to delete?")){
+           document.getElementById('package-edit-action-' + id).submit(); 
+        }
+    }
+</script>
