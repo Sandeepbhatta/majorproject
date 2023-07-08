@@ -18,24 +18,41 @@ class PackageController extends Controller
         return view('package.create');
     }
     public function store(Request $request){
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'price' => ['required',],
-            // 'discount' => 'required',
             'description' => 'required',
             'features' => 'required',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        if($validator->passes()){
+        if ($validator->passes()) {
             // echo "success";
             $package = new Package();
             $package -> name = $request->name;
             $package -> price = $request->price;
             $package -> discount = $request->discount;
             $package -> description = $request->description;
-            $package -> features = $request->features;
-            $package -> image = $request->image;
+            $package -> features = implode(', ', $request->features);
             $package -> save();
+            //upload image here
+            if ($request->image) {
+                $ext = $request->image->getClientOriginalExtension();
+                $newFileName = time() . '.' . $ext;
+                $request->image->move(public_path() . '/uploads/package/', $newFileName);
+                $package->image = $newFileName;
+                $package->save();
+            }
+            // if ($request->hasFile('image')) {
+            //     $imagePath = $request->file('image')->store('images', 'public');
+        
+                // Save the image path to the database or perform any other required actions
+                //  $newFileName = time() . '.' . $ext;
+
+                //  $package->image = $newFileName;
+                // Return a response indicating success
+            //     return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);
+            // }
+        
             $request->session()->flash('success','Package Added Successfully!');
             return redirect()->route('package.index');
         }else{
@@ -61,21 +78,25 @@ class PackageController extends Controller
         ]);
         if($validator->passes()){
             // echo "success";
-            $package = Package::find($id);
-            $$package = new Package();
+            $package = new Package();
             $package -> name = $request->name;
             $package -> price = $request->price;
             $package -> discount = $request->discount;
             $package -> description = $request->description;
             $package -> features = $request->features;
-            $package -> image = $request->image;
             $package -> save();
-            $request->session()->flash('success','Package Edited Successfully!');
+            if ($request->$image){
+                $ext = $request->image->getClientOriginalExtention();
+                $newFileName = time().'.'.$ext;
+                $request-> image->move(public_path().'/uploads/package/',$newFileName);
+                $package -> image=$newFileName ;
+                $package -> save();
+            }
+            $request->session()->flash('success','Package Added Successfully!');
             return redirect()->route('package.index');
         }else{
-            return redirect()->route('package.edit',$id)->withErrors($validator)->withInput();
+            return redirect()->route('package.edit')->withErrors($validator)->withInput();
         }
-
     }
     public function destroy($id, Request $request)
     {

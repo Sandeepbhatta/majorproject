@@ -56,8 +56,8 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{asset('index.blade.php')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
@@ -152,16 +152,20 @@
             <!-- Navbar End -->
             @yield('admin') 
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded-top p-4">
+            <div class="container-fluid pt-4 px-4 mt-4">
+                <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                        <div class="col-12 col-sm-6 text-center text-sm-start ">
+                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            Designed By <a href="#">TEAM YFJ</a>
+                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Footer End -->
+            <!--footer End -->
             </div>
             <!-- Content End -->
 

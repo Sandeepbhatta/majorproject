@@ -139,9 +139,19 @@
             <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-                    <form action="{{route('package.store')}}" method="post">
+                    <form action="{{route('package.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-dialog " >
+                        @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
                             <div class="modal-content ">
                                 <div class="modal-header" >
                                     <h5 class="modal-title" id="model-title" style="Color:Black">Create Package</h5>
@@ -149,77 +159,65 @@
                                 </div>
                                 <div class="modal-body ">
                                     <div class="form-group md-4">
-                                        <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;>
+                                        <label for="name" class="form-label">Package Name</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
                                         @error('name')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="valid-feedback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="package" class="form-label">Booking Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <label for="price" class="form-label">Price</label>
+                                        <input type="number" class="form-control @error('Price') is-invalid @enderror" name="price" placeholder="Price" value="{{ old('Price') }}" style="background:white;">
+                                        @error('Price')
+                                            <p class="valid-feedback">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="start" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <label for="discount" class="form-label">Discount</label>
+                                        <input type="number" class="form-control @error('number') is-invalid @enderror"   name="discount" placeholder="Discount" value="{{old('discount')}}" style="background:white;">
+                                        @error('discount')
+                                        <p class="valid-feedback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="end" class="form-label">End Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <label for="description" class="form-label"></label>
+                                        <input type="text" size="100"class="form-control @error('date') is-invalid @enderror"  name="description" placeholder="Description" value="{{old('description')}}" style="background:white;">
+                                        @error('description')
+                                        <p class="valid-feedback">{{$message}}</p>
                                         @enderror
                                     </div>
-                                    <div class="form-group md-1  "  >
-                                        <label for ="form" class="form-label">Advance Payment</label>
-                                        <select class="form-control" name="price_status" >
-                                        <option disabled selected>Choose One</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                        </select>
-                                    </div>  
-                                    <div class="form-group md-3 " >
-                                        <label for ="form" class="form-label">Package Type</label>
-                                        <select class="form-control" name="booking_type" >
-                                        <option disabled selected>Choose Package</option>
-                                        <option value="wedding">Wedding</option>
-                                        <option value="babyshower">Baby Shower</option>
-                                        <option value="weaning">Weanig</option>
-                                        <option value="exhibition">Exhibition</option>
-                                        <option value="fair">Fair</option>
-                                        <option value="musicfestival">Music festival</option>
-                                        <option value="Cevent">Corporate Event</option>
-                                        </select>
-                                        <!-- <span id="typeError" class="text-danger"></span> -->
+                                    <div class="form-group my-1 py-2">
+                                        <label class="form-label">Features</label><br>
+                                        <input type="checkbox" name="features[]" checked value="Decoration and Design">Decoration and Design<br>
+                                        <input type="checkbox"value="Customized Theme"  checked  name="features[]"  value="Customized Theme">Customized Theme <br>
                                     </div>
-                                    <!-- <label for="imageUpload">Upload Image:</label>
-                                    <input type="file" id="imageUpload" name="imageUpload">                                    -->
+
+                                    <div>
+                                    <label for="image" class="form-label">Upload Image:</label>
+                                    <input type="file" name="image" class="@error('image') is-invalid @enderror">    
+                                    @error('image')
+                                     <p class="valid-feedback">{{$message}}</p>
+                                    @enderror
+                                </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a href="{{route('package.index')}}" class="btn btn-secondary">Back</a>
-                                    <button class="btn btn-primary">Save</button>
+                                    <input type="submit" class="btn btn-primary" value="Save">
                                 </div>
                             </div>
                         </div>
                     </form>
             <!-- pop up model end -->
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 ">
-                <div class="bg-secondary rounded-top p-4">
-                    <div class="row mt-6">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+            <div class="container-fluid pt-4 px-4 mt-4">
+                <div class="bg-secondary rounded-top p-4 mt-3">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start ">
+                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                            Designed By <a href="#">TEAM YFJ</a>
+                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
                         </div>
                     </div>
                 </div>

@@ -60,9 +60,9 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -141,7 +141,10 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                    <a href="{{route('package.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3">Add Pacakge</a> 
+                    <div class="text-center text-sm-end">
+                    <a href="{{route('package.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3 ">Add Package</a> 
+
+                    </div>
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -155,11 +158,11 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Booking Date</th>
-                                        <th scope="col">AD Payment Status</th>
-                                        <th scope="col">Package</th>
-                                        <th scope="col">Start Date</th>
-                                        <th scope="col">End Date</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Features</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     @if( $packages->isNOtEmpty() )
@@ -167,15 +170,15 @@
                                     <tr>
                                         <td scope="col">{{ $package->id }}</td>
                                         <td scope="col">{{ $package->name }}</td>
-                                        <td scope="col">{{ $package->package_date }}</td>
-                                        <td scope="col">{{ $package->price_status }}</td>
-                                        <td scope="col">{{ $package->package_type }}</td>
-                                        <td scope="col">{{ $package->start_date}}</td>
-                                        <td scope="col">{{ $package->end_date}} </td>
+                                        <td scope="col">{{ $package->price }}</td>
+                                        <td scope="col">{{ $package->discount }}</td>
+                                        <td scope="col">{{ $package->description }}</td>
+                                        <td scope="col">{{ $package->features}}</td>
+                                        <td scope="col">{{ $package->image}} </td>
                                         <td>
                                             <a href="{{ route('package.edit',$package->id) }}" class="btn btn-info" >Edit</a>
                                             <a href="#" onClick="deletepackage({{$package->id}})" class="btn btn-primary">Delete</a>
-                                            <form id="package-edit-action-{{$package->id}}" action="{{route('package.destroy',$booking->id)}}" method="post">
+                                            <form id="package-edit-action-{{$package->id}}" action="{{route('package.destroy',$package->id)}}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
@@ -201,16 +204,15 @@
             </div>
             <!-- Table End -->
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 ">
+            <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                            Designed By <a href="#">TEAM YFJ</a>
+                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
                         </div>
                     </div>
                 </div>

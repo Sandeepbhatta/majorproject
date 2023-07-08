@@ -8,17 +8,17 @@ use Illuminate\Support\Facades\Validator;
 class BookingController extends Controller
 {
     //
-    public function index(){
-        $booking = Bookings::orderBy('id','Asc')->paginate(2);
-
-        return view('booking.booking',['bookings'=> $booking]);
-    }
-    public function create()
+    public function index()
     {
-        return view('booking.create');
+        $dataReturn['bookings'] = Bookings::orderBy('id', 'asc')->paginate(2);
+    
+        // return response()->json($bookings);
+        return view('booking.booking', $dataReturn);
     }
-    public function store(Request $request){
-        $validator = Validator::make($request->all(),[
+    
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'booking_date' => ['required', 'date'],
             'price_status' => 'required',
@@ -26,32 +26,38 @@ class BookingController extends Controller
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
-        if($validator->passes()){
-            // echo "success";
+    
+        if ($validator->passes()) {
             $booking = new Bookings();
-            $booking -> name = $request->name;
-            $booking -> booking_date = $request->booking_date;
-            $booking -> price_status = $request->price_status;
-            $booking -> booking_type = $request->booking_type;
-            $booking -> start_date = $request->start_date;
-            $booking -> end_date = $request->end_date;
-            $booking -> save();
-            $request->session()->flash('success','Booking Added Successfully!');
-            return redirect()->route('booking.index');
-        }else{
-            return redirect()->route('booking.create')->withErrors($validator)->withInput();
+            // Assign request values to booking model attributes
+            $booking->name = $request->name;
+            $booking->booking_date = $request->booking_date;
+            $booking->price_status = $request->price_status;
+            $booking->booking_type = $request->booking_type;
+            $booking->start_date = $request->start_date;
+            $booking->end_date = $request->end_date;
+            $booking->save();
+    
+            return response()->json(['message' => 'Booking created successfully'], 201);
+        } else {
+            return response()->json(['errors' => $validator->errors()], 400);
         }
     }
-    public function edit($id){
-        $booking=Bookings::findorfail($id);
-        // if(!$booking){
-        //     abort('404');
-        // }
-
-        return view('booking.edit',['booking'=>$booking]);
+    
+    public function show($id)
+    {
+        $booking = Bookings::find($id);
+    
+        if (!$booking) {
+            return response()->json(['message' => 'Booking not found'], 404);
+        }
+    
+        return response()->json($booking);
     }
-    public function update($id, Request $request){
-        $validator = Validator::make($request->all(),[
+    
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'booking_date' => ['required', 'date'],
             'price_status' => 'required',
@@ -59,31 +65,40 @@ class BookingController extends Controller
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
-        if($validator->passes()){
-            // echo "success";
+    
+        if ($validator->passes()) {
             $booking = Bookings::find($id);
-            $booking -> name = $request->name;
-            $booking -> booking_date = $request->booking_date;
-            $booking -> price_status = $request->price_status;
-            $booking -> booking_type = $request->booking_type;
-            $booking -> start_date = $request->start_date;
-            $booking -> end_date = $request->end_date;
-            $booking -> save();
-            $request->session()->flash('success','Booking Edited Successfully!');
-            return redirect()->route('booking.index');
-        }else{
-            return redirect()->route('booking.edit',$id)->withErrors($validator)->withInput();
+    
+            if (!$booking) {
+                return response()->json(['message' => 'Booking not found'], 404);
+            }
+    
+            // Assign request values to booking model attributes
+            $booking->name = $request->name;
+            $booking->booking_date = $request->booking_date;
+            $booking->price_status = $request->price_status;
+            $booking->booking_type = $request->booking_type;
+            $booking->start_date = $request->start_date;
+            $booking->end_date = $request->end_date;
+            $booking->save();
+    
+            return response()->json(['message' => 'Booking updated successfully']);
+        } else {
+            return response()->json(['errors' => $validator->errors()], 400);
         }
-
     }
-    public function destroy($id, Request $request)
+    
+    public function destroy($id)
     {
-        $booking = Bookings::findOrfail($id);
+        $booking = Bookings::find($id);
+    
+        if (!$booking) {
+            return response()->json(['message' => 'Booking not found'], 404);
+        }
+    
         $booking->delete();
-        //File::delete(public_path().'/uploads/booking'.$booking->image);
-        // $request->session()->flash('success','Booking Deleted successfully');
-        return redirect()->route('booking.index')
-                        ->with('success','Booking deleted successfully');
+    
+        return response()->json(['message' => 'Booking deleted successfully']);
     }
     
     // /**

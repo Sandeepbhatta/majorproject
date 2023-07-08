@@ -60,9 +60,9 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -141,12 +141,9 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                  <div class="flex justify-end">
-                  <a href="{{route('booking.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a> 
-
-                  </div>
-
-                  
+                    <div class="text-center text-sm-end">
+                        <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Booking</a> 
+                    </div>
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -198,24 +195,24 @@
                                 </thead>
                             </table>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-2">
                             {{ $bookings->links() }}
                         </div>
+                        
                     </div>
                 </div>
             </div>
             <!-- Table End -->
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 ">
+            <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                            Designed By <a href="#">TEAM YFJ</a>
+                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
                         </div>
                     </div>
                 </div>

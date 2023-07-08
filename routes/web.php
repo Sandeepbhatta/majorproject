@@ -67,12 +67,12 @@ Route::delete('/booking/{booking}',[BookingController::class, 'destroy'])->name(
 
 
 //package route
-Route::get('/package',[PackageContorller::class, 'index'])->name('package.index');
-Route::get('/package/create',[PackageContorller::class, 'create'])->name('package.create');
-Route::post('/package',[PackageContorller::class, 'store'])->name('package.store');
-Route::get('/package/{package}/edit',[PackageContorller::class, 'edit'])->name('package.edit');
-Route::put('/package/{package}',[PackageContorller::class, 'update'])->name('package.update');
-Route::delete('/package/{package}',[PackageContorller::class, 'destroy'])->name('package.destroy');
+Route::get('/package',[PackageController::class, 'index'])->name('package.index');
+Route::get('/package/create',[PackageController::class, 'create'])->name('package.create');
+Route::post('/package',[PackageController::class, 'store'])->name('package.store');
+Route::get('/package/{package}/edit',[PackageController::class, 'edit'])->name('package.edit');
+Route::put('/package/{package}',[PackageController::class, 'update'])->name('package.update');
+Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name('package.destroy');
 
 
 
