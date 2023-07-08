@@ -73,6 +73,8 @@ Route::post('/package',[PackageController::class, 'store'])->name('package.store
 Route::get('/package/{package}/edit',[PackageController::class, 'edit'])->name('package.edit');
 Route::put('/package/{package}',[PackageController::class, 'update'])->name('package.update');
 Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name('package.destroy');
+// Route::get('/search/{package}', [PackageController::class, 'search'])->name('package.search');
+
 
 
 

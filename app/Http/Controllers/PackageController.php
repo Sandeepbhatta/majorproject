@@ -8,33 +8,41 @@ use Illuminate\Support\Facades\Validator;
 
 class PackageController extends Controller
 {
-    public function index(){
-        $package = Package::orderBy('id','Asc')->paginate(2);
-
-        return view('package.package',['packages'=> $package]);
+    public function index(Request $request)
+    {
+        if ($request->wantsJson()) {
+            $packages = Package::orderBy('id', 'asc')->paginate(2);
+            return response()->json($packages);
+        } else {
+            $package = Package::orderBy('id', 'asc')->paginate(2);
+            return view('package.package', ['packages' => $package]);
+        }
     }
+
     public function create()
     {
         return view('package.create');
     }
-    public function store(Request $request){
+
+    public function store(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'price' => ['required',],
+            'price' => ['required'],
             'description' => 'required',
             'features' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
         if ($validator->passes()) {
-            // echo "success";
             $package = new Package();
-            $package -> name = $request->name;
-            $package -> price = $request->price;
-            $package -> discount = $request->discount;
-            $package -> description = $request->description;
-            $package -> features = implode(', ', $request->features);
-            $package -> save();
-            //upload image here
+            $package->name = $request->name;
+            $package->price = $request->price;
+            $package->discount = $request->discount;
+            $package->description = $request->description;
+            $package->features = implode(', ', $request->features);
+            $package->save();
+
             if ($request->image) {
                 $ext = $request->image->getClientOriginalExtension();
                 $newFileName = time() . '.' . $ext;
@@ -42,69 +50,97 @@ class PackageController extends Controller
                 $package->image = $newFileName;
                 $package->save();
             }
-            // if ($request->hasFile('image')) {
-            //     $imagePath = $request->file('image')->store('images', 'public');
-        
-                // Save the image path to the database or perform any other required actions
-                //  $newFileName = time() . '.' . $ext;
 
-                //  $package->image = $newFileName;
-                // Return a response indicating success
-            //     return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);
-            // }
-        
-            $request->session()->flash('success','Package Added Successfully!');
-            return redirect()->route('package.index');
-        }else{
-            return redirect()->route('package.create')->withErrors($validator)->withInput();
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Package added successfully']);
+            } else {
+                $request->session()->flash('success', 'Package Added Successfully!');
+                return redirect()->route('package.index');
+            }
+        } else {
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            } else {
+                return redirect()->route('package.create')->withErrors($validator)->withInput();
+            }
         }
     }
-    public function edit($id){
-        $package=Package::findorfail($id);
-        // if(!$package){
-        //     abort('404');
-        // }
 
-        return view('package.edit',['package'=>$package]);
+    public function edit($id)
+    {
+        $package = Package::findOrFail($id);
+
+        if ($request->wantsJson()) {
+            return response()->json($package);
+        } else {
+            return view('package.edit', ['package' => $package]);
+        }
     }
-    public function update($id, Request $request){
-        $validator = Validator::make($request->all(),[
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'price' => ['required',],
-            // 'discount' => 'required',
+            'price' => ['required'],
             'description' => 'required',
             'features' => 'required',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        if($validator->passes()){
-            // echo "success";
-            $package = new Package();
-            $package -> name = $request->name;
-            $package -> price = $request->price;
-            $package -> discount = $request->discount;
-            $package -> description = $request->description;
-            $package -> features = $request->features;
-            $package -> save();
-            if ($request->$image){
-                $ext = $request->image->getClientOriginalExtention();
-                $newFileName = time().'.'.$ext;
-                $request-> image->move(public_path().'/uploads/package/',$newFileName);
-                $package -> image=$newFileName ;
-                $package -> save();
+
+        if ($validator->passes()) {
+            $package = Package::find($id);
+            $package->name = $request->name;
+            $package->price = $request->price;
+            $package->discount = $request->discount;
+            $package->description = $request->description;
+            $package->features = implode(', ', $request->features);
+            $package->save();
+
+            if ($request->image) {
+                $ext = $request->image->getClientOriginalExtension();
+                $newFileName = time() . '.' . $ext;
+                $request->image->move(public_path() . '/uploads/package/', $newFileName);
+                $package->image = $newFileName;
+                $package->save();
             }
-            $request->session()->flash('success','Package Added Successfully!');
-            return redirect()->route('package.index');
-        }else{
-            return redirect()->route('package.edit')->withErrors($validator)->withInput();
+
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Package updated successfully']);
+            } else {
+                $request->session()->flash('success', 'Package Updated Successfully!');
+                return redirect()->route('package.index');
+            }
+        } else {
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            } else {
+                return redirect()->route('package.edit', $id)->withErrors($validator)->withInput();
+            }
         }
     }
-    public function destroy($id, Request $request)
+
+    public function destroy(Request $request, $id)
     {
-        $package = Package::findOrfail($id);
+        $package = Package::findOrFail($id);
         $package->delete();
-        //File::delete(public_path().'/uploads/package'.$package->image);
-        // $request->session()->flash('success','package Deleted successfully');
-        return redirect()->route('package.index')
-                        ->with('success','package deleted successfully');
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Package deleted successfully']);
+        } else {
+            return redirect()->route('package.index')->with('success', 'Package deleted successfully');
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $results = Package::where('name', 'like', '%' . $query . '%')->get();
+
+        if ($request->wantsJson()) {
+            return response()->json($results);
+        } else {
+            return view('search.results', ['results' => $results]);
+        }
     }
 }

@@ -85,8 +85,9 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                <form  class="d-none d-md-flex ms-4" method="GET">
+                    <input class="form-control bg-dark border-0" name="query" type="search" placeholder="Search">
+             
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
@@ -240,7 +241,7 @@
 
 </html>
 <script>
-    function deletePackage(id){
+    function deletepackage(id){
         if(confirm("Are you sure you want to delete?")){
            document.getElementById('package-edit-action-' + id).submit(); 
         }
