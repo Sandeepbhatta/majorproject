@@ -25,11 +25,18 @@ Route::prefix('admin')->group(function(){
     
 
     Route::get('/login',[AdminController::class, 'Index'])->name('login_form');
-    Route::post('/login/owner',[AdminController::class, 'Login'])->name('admin.login');
+    Route::post('/login',[AdminController::class, 'Login'])->name('admin.login');
     Route::get('/dashboard',[AdminController::class, 'Dashboard'])->name('admin.dashboard')->middleware('admin');
     Route::get('/logout',[AdminController::class, 'Logout'])->name('admin.logout')->middleware('admin');
     Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
     Route::post('/register/create',[AdminController::class, 'RegisterCreate'])->name('admin.register.create');
+    
+    Route::get('/admin',[adminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/create',[adminController::class, 'create'])->name('admin.create');
+    Route::post('/admin',[adminController::class, 'store'])->name('admin.store');
+    Route::get('/admin/{admin}/edit',[adminController::class, 'edit'])->name('admin.edit');
+    Route::put('/admin/{admin}',[adminController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/{admin}',[adminController::class, 'destroy'])->name('admin.destroy');
     //category route
 
 });

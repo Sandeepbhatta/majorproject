@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/apitest',[ApiController::class, 'apitest'])->name('apitest');
-Route::get('/login',[AdminController::class, 'Index'])->name('login_form');
+Route::get('/login',[AdminController::class, 'Index'])->name('login_form');   
+Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
+
 
 
 

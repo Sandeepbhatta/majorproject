@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>SuperAdmin panel</title>
+    <title>Admin panel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -51,8 +51,8 @@
                             <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span>
+                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                            <!-- <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span> -->
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
@@ -94,7 +94,7 @@
                                     
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                 <div class="d-flex align-items-center">
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                            <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>

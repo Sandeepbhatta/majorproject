@@ -60,7 +60,7 @@ class BookingController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $booking = Bookings::findOrFail($id);
 

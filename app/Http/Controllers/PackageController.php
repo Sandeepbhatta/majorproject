@@ -66,7 +66,7 @@ class PackageController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $package = Package::findOrFail($id);
 

@@ -58,26 +58,48 @@
                         </div>
                         <form action="{{route('admin.register.create')}}" class='' method='post'>
                         @csrf
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="user" placeholder="Username">
+                            <input type="text" class="form-control @error('user') is-invalid @enderror"  name="user" value="{{old('user')}}"  placeholder="Username">
                             <label for="user">Username</label>
+                            @error('user')
+                            <p class="valid-feedback">{{$message}}</p>
+                            @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" name="email" placeholder="name@example.com">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{old('email')}}" placeholder="name@example.com">
                             <label for="email">Email address</label>
+                            @error('email')
+                            <p class="valid-feedback">{{$message}}</p>
+                            @enderror
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="passowrd"  placeholder="Password">
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password">
                             <label for="password">Password</label>
+                            @error('password')
+                            <p class="invalid-feedback">{{$message}}</p>
+                            @enderror
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="password_confirmation" placeholder="ConfirmPassword">
-                            <label for="password">Confirm Password</label>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Confirm Password">
+                            <label for="password_confirmation">Confirm Password</label>
+                            @error('password_confirmation')
+                            <p class="invalid-feedback">{{$message}}</p>
+                            @enderror
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="form-check">
-                            <input type="checkbox" class="form-check-input" >
-                            <label class="form-check-label" for="exampleCheck1">remember me</label>
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <label class="form-check-label" for="remember">Remember me</label>
+                            </div>
                         </div>
                         <a href="">Forgot Password</a>
                     </div>
