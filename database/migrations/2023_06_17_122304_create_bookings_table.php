@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->string('name');
+            $table->string('mobile');
+            $table->string('email');
             $table->date('booking_date');
             $table->string('price')->nullable();
             $table->tinyInteger('booking_status')->default(0);

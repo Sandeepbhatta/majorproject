@@ -51,11 +51,12 @@
                 </div>
             </div>
             <!-- Table Start -->
+            @if(Auth::guard('admin')->user()->role == "superadmin")
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                    <div class="text-center text-sm-end">
+                    <!-- <div class="text-center text-sm-end">
                     <a href="{{ route('admin.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-3 ">Add Admin</a> 
-                    </div>
+                    </div> -->
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -79,15 +80,17 @@
                                         <td scope="col">{{ $admin->id }}</td>
                                         <td scope="col">{{ $admin->name }}</td>
                                         <td scope="col">{{ $admin->email }}</td>
-                                        <td scope="col">{{ $admin->status}}</td>
+                                        <td scope="col">{{ $admin->role}}</td>
                                         <td>
                                             <a href="{{ route('admin.edit',$admin->id) }}" class="btn btn-info" >Edit</a>
-                                            <a href="#" onClick="deleteAdmin({{$admin->id}})" class="btn btn-primary">Delete</a>
-                                            <form id="admin-edit-action-{{$admin->id}}" action="{{route('admin.destroy',$admin->id)}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
-                                            </form>
+                                            @if(Auth::guard('admin')->user()->role !=  $admin->role)
+                                                <a href="#" onClick="deleteAdmin({{$admin->id}})" class="btn btn-primary">Delete</a>
+                                                <form id="admin-edit-action-{{$admin->id}}" action="{{route('admin.destroy',$admin->id)}}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -107,6 +110,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <!-- Table End -->
             <script>
                 function deleteAdmin(id){

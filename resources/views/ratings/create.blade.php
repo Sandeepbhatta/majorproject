@@ -25,6 +25,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
 </head>
 <body>
  
@@ -51,25 +53,23 @@
                             <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}} {{Auth::guard('admin')->user()->email}}</h6>
-                            <!-- <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span> -->
+                            <h6 class="mb-0"></h6>
+                            <!-- <span>SuperAdmin Name : </span> -->
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{asset('index.blade.php')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('admin.dashboard')}}"  class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
-                        <a href="{{route('ratings.create')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
-                        
-                        @if(Auth::guard('admin')->user()->role == "superadmin")
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a href="{{route('admin.register')}}" class="dropdown-item">Sign Up</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('ratings.create')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+                        @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->role == "superadmin")
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
+                                <div class="dropdown-menu bg-transparent border-0">
+                                    <a href="{{route('admin.register')}}" class="dropdown-item">Sign Up</a>
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </nav>
@@ -79,7 +79,7 @@
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="{{route('admin.dashboard')}}" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
                 </a>
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -100,7 +100,7 @@
                                     
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                                        <h6 class="fw-normal mb-0"></h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                                 <div class="d-flex align-items-center">
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                                        <h6 class="fw-normal mb-0"></h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
+                            <span class="d-none d-lg-inline-flex"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
@@ -155,10 +155,56 @@
                     </div>
                 </div>
             </nav>
-            <!-- Navbar End -->
-            @yield('admin') 
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 mt-4">
+                             <!-- Table Start -->
+        <div class="container-fluid pt-4 px-4">
+        <div class="row g-14">
+            <!-- <div class="text-center text-sm-end">
+                <a href="{{ route('invoice.payment') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Payment</a> 
+            </div> -->
+            <div class="col-sm-12 ">
+                <div class="bg-secondary rounded h-100 p-4">
+                    @if(Session::has('success'))
+                    <div class="alert alert-success">
+                        {{Session::get('success')}}
+                </div>
+                    @endif
+                    <h6 class="mb-4">Rating List</h6>
+                    <table class="table table-hover" id="booking-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Package Name</th>
+                                <th scope="col">User Email</th>
+                                <th scope="col">Review</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            @foreach( $ratings as $rating )
+                            <tr>
+                                <td scope="col">{{ $rating['id'] }}</td>
+                                <td scope="col">{{ $rating['package'] }}</td>
+                                <td scope="col">{{ $rating['email'] ?? '' }}</td>
+                                <td scope="col">{{ $rating['review'] }}</td>
+                                <td scope="col">{{ $rating['rating']}}</td> 
+                                <td>
+                                    <!-- <a href="{{($rating['id']) }}" class="btn btn-info" >Edit</a> -->
+                                    <a href="#" onClick="deleteRatings({{$rating['id'] }})" class="btn btn-primary">Delete</a>
+                                    <form id="rating-edit-action-{{$rating['id'] }}" action="{{($rating['id'] )}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                            
+                           
+                        </thead>
+                    </table>
+                </div>
+            </div>
+                    <!-- Footer Start -->
+                        <div class="container-fluid pt-3 px-4 mt-3 ">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">
@@ -187,3 +233,10 @@
 </body>
 
 </html>
+<script>
+    function deleteRatings(id){
+        if(confirm("Are you sure you want to delete?")){
+           document.getElementById('rating-edit-action-' + id).submit(); 
+        }
+    }
+</script>

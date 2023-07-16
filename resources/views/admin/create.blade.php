@@ -35,20 +35,7 @@
                     <p class="valid-feedback">{{$message}}</p>
                     @enderror
                 </div>
-                <!-- <div class="form-group md-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" size="100" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password" style="background:white;">
-                    @error('password')
-                    <p class="invalid-feedback">{{$message}}</p>
-                    @enderror
-                </div>
-                <div class="form-group md-4">
-                    <label for="confirm_password" class="form-label">Confirm Password</label>
-                    <input type="password" size="100" class="form-control @error('confirm_password') is-invalid @enderror" name="confirm_password" placeholder="Confirm Password" style="background:white;">
-                    @error('confirm_password')
-                    <p class="invalid-feedback">{{$message}}</p>
-                    @enderror
-                </div> -->
+
                 <div class="form-floating mb-3">
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password" style="background:white;">
                             <label for="password">Password</label>
@@ -66,7 +53,7 @@
                                 
             </div>
             <div class="modal-footer">
-                <a href="{{route('admin.index')}}" class="btn btn-secondary">Back</a>
+                <a href="{{route('admin.dashboard')}}" class="btn btn-secondary">Back</a>
                 <input type="submit" class="btn btn-primary" value="Save">
             </div>
         </div>

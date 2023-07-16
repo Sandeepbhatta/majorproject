@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Form;
+use Illuminate\Support\Facades\Mail;
 use Auth;
 use App\Models\Admin;
 use Carbon\Carbon;
@@ -35,7 +36,7 @@ class AdminController extends Controller
         // dd($request->all());
          $check = $request->all();
          if(auth::guard('admin')->attempt(['email'=> $check['email'], 'password'=> $check['password']])){
-            return redirect()->route('admin.dashboard')->with('error','superadmin login successfully');
+            return redirect()->route('admin.dashboard')->with('error',' Login successfully');
          }else{
             $error = 'Invalid email or password';
             return view('admin.admin_login',compact('error'));
@@ -54,7 +55,11 @@ class AdminController extends Controller
     $validator = Validator::make($request->all(), [
         'user' => ['required', 'string'],
         'email' => ['required', 'email', Rule::unique('admins')],
-        'password' => ['required', 'string', 'confirmed'],
+        'password' => ['required', 
+        'string', 
+        'confirmed',
+        'min:8',             // Minimum length of 8 characters
+        ], 
         'password_confirmation' => ['required', 'string'],
     
     ]);
@@ -68,6 +73,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'password' => $hashedPassword, // Hash the password
             'created_at' => Carbon::now(),
+            'role'=>$request->admin,
             'email_verified_at' => Carbon::now(),
         ]);
     
@@ -102,11 +108,15 @@ class AdminController extends Controller
             // 'status' => 'required',
             
         ]);
+// mail try
 
+
+// mail try end
         if ($validator->passes()) {
             $admin = new Admin();
             $admin->name = $request->name;
             $admin->email = $request->email;
+            $admin->role = "admin";
             $admin->password = bcrypt($request->password);;
             // $admin->confirm_password = $request->confirm_password;
             // $admin->status = $request->status;

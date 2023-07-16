@@ -87,6 +87,8 @@
                             @error('password')
                             <p class="invalid-feedback">{{$message}}</p>
                             @enderror
+                            <small>min 8 characters</small>
+
                         </div>
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Confirm Password">

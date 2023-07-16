@@ -13,11 +13,11 @@ class Category extends Model
     protected $table='categories';
     protected $fillable = [
         'name',
-        'slug',
         'description',
+        'feature',
         'image',
-        'meta_title',
-        'status',
+
+
 
     ];
 }

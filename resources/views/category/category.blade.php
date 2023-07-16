@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="utf-8">
-    <title>SuperAdmin panel</title>
+    <title>Admin panel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -30,8 +30,9 @@
 
 
 </head>
+
 <body>
-<div class="container-fluid position-relative d-flex p-0">
+    <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -60,19 +61,21 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('category.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Category</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('category.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
                         <a href="{{route('ratings.create')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
+                        @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a href="{{route('admin.register')}}" class="dropdown-item">Sign Up</a>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </nav>
             </div>
@@ -89,8 +92,9 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                <form  class="d-none d-md-flex ms-4" method="GET">
+                    <input class="form-control bg-dark border-0" name="query" type="search" placeholder="Search">
+             
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
@@ -140,79 +144,69 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            <!-- Modal -->
-            <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
-               <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-               <form action="{{route('package.update',$package->id)}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        @method('put')
-                        <div class="modal-dialog " >
-                            @if($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            <div class="modal-content ">
-                                <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Edit Package</h5>
-                                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                                </div>
-                                <div class="modal-body ">
-                                    <div class="form-group md-4">
-                                        <label for="name" class="form-label">Package Name</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name',$package->name)}}" style="background:white;">
-                                        @error('name')
-                                        <p class="valid-feedback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="price" class="form-label">Price</label>
-                                        <input type="number" class="form-control @error('Price') is-invalid @enderror" name="price" placeholder="Price" value="{{ old('Price',$package->price) }}" style="background:white;">
-                                        @error('Price')
-                                            <p class="valid-feedback">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="discount" class="form-label">Discount</label>
-                                        <input type="number" class="form-control @error('number') is-invalid @enderror"   name="discount" placeholder="Discount" value="{{old('discount',$package->discount)}}" style="background:white;">
-                                        @error('discount')
-                                        <p class="valid-feedback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="description" class="form-label"></label>
-                                        <input type="text" size="100"class="form-control @error('date') is-invalid @enderror"  name="description" placeholder="Description" value="{{old('description',$package->description)}}" style="background:white;">
-                                        @error('description')
-                                        <p class="valid-feedback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group my-1 py-2">
-                                        <label class="form-label">Features</label><br>
-                                        <input type="checkbox" name="features[]" checked value="Decoration and Design">Decoration and Design<br>
-                                        <input type="checkbox"value="Customized Theme"  checked  name="features[]"  value="Customized Theme">Customized Theme <br>
-                                    </div>
 
-                                    <div>
-                                    <label for="image" class="form-label">Upload Image:</label>
-                                    <input type="file" name="image" class="@error('image') is-invalid @enderror">    
-                                    @error('image')
-                                     <p class="valid-feedback">{{$message}}</p>
-                                    @enderror
-                                </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="{{route('package.index')}}" class="btn btn-secondary">Back</a>
-                                    <button class="btn btn-primary">Save</button>
-                                </div>
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-14">
+                    <div class="text-center text-sm-end">
+                    <a href="{{route('category.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3 ">Add Category</a> 
+
+                    </div>
+                    <div class="col-sm-12 ">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                {{Session::get('success')}}
                             </div>
+                            @endif
+                            <h6 class="mb-4">Category List</h6>
+                            <table class="table table-hover" id="package-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Features</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    @if( $categories->isNOtEmpty() )
+                                    @foreach( $categories as $category )
+                                    <tr>
+                                        <td scope="col">{{ $category->id }}</td>
+                                        <td scope="col">{{ $category->name }}</td>
+                                        <td scope="col">{{ $category->description }}</td>
+                                        <td scope="col">{{ $category->features}}</td>
+                                        <td scope="col">{{ $category->image}} </td>
+                                        <td>
+                                            <a href="{{ route('category.edit',$category->id) }}" class="btn btn-info" >Edit</a>
+                                            <a href="#" onClick="deletecategory({{$category->id}})" class="btn btn-primary">Delete</a>
+                                            <form id="category-edit-action-{{$category->id}}" action="{{route('category.destroy',$category->id)}}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    
+                                    @else
+                                    <tr>
+                                        <tdcolspan="6">Record Not Found</td>
+                                    </tr>
+
+                                    @endif
+                                </thead>
+                            </table>
                         </div>
-                    </form>
-            <!-- pop up model end -->
+                        <div class="mt-3">
+                            {{ $categories->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">
@@ -249,3 +243,10 @@
 </body>
 
 </html>
+<script>
+    function deletecategory(id){
+        if(confirm("Are you sure you want to delete?")){
+           document.getElementById('category-edit-action-' + id).submit(); 
+        }
+    }
+</script>

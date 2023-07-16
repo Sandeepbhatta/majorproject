@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,12 +51,16 @@ class PackageController extends Controller
                 $package->image = $newFileName;
                 $package->save();
             }
+                // get rating of the package
+
+            $rating = Rating::with('user')->where('package_id',$id)->get()->toArray();
+
 
             if ($request->wantsJson()) {
                 return response()->json(['message' => 'Package added successfully']);
             } else {
                 $request->session()->flash('success', 'Package Added Successfully!');
-                return redirect()->route('package.index');
+                return redirect()->route('package.index')->with(Compact('rating'));
             }
         } else {
             if ($request->wantsJson()) {
@@ -118,6 +123,7 @@ class PackageController extends Controller
             }
         }
     }
+    
 
     public function destroy(Request $request, $id)
     {

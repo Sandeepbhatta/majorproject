@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="utf-8">
-    <title>SuperAdmin panel</title>
+    <title>Admin panel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -60,19 +60,21 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('category.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('category.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Category</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
                         <a href="{{route('ratings.create')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
+                        @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a href="{{route('admin.register')}}" class="dropdown-item">Sign Up</a>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </nav>
             </div>
@@ -144,49 +146,35 @@
             <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-               <form action="{{route('package.update',$package->id)}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @method('put')
                         <div class="modal-dialog " >
-                            @if($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                             <div class="modal-content ">
                                 <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Edit Package</h5>
+                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create category</h5>
                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
                                 <div class="modal-body ">
                                     <div class="form-group md-4">
-                                        <label for="name" class="form-label">Package Name</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name',$package->name)}}" style="background:white;">
+                                        <label for="name" class="form-label">category Name</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
                                         @error('name')
                                         <p class="valid-feedback">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
-                                        <label for="price" class="form-label">Price</label>
-                                        <input type="number" class="form-control @error('Price') is-invalid @enderror" name="price" placeholder="Price" value="{{ old('Price',$package->price) }}" style="background:white;">
-                                        @error('Price')
-                                            <p class="valid-feedback">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="discount" class="form-label">Discount</label>
-                                        <input type="number" class="form-control @error('number') is-invalid @enderror"   name="discount" placeholder="Discount" value="{{old('discount',$package->discount)}}" style="background:white;">
-                                        @error('discount')
-                                        <p class="valid-feedback">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="description" class="form-label"></label>
-                                        <input type="text" size="100"class="form-control @error('date') is-invalid @enderror"  name="description" placeholder="Description" value="{{old('description',$package->description)}}" style="background:white;">
+                                        <label for="description" class="form-label">description</label>
+                                        <input type="text" size="100"class="form-control @error('date') is-invalid @enderror"  name="description" placeholder="Description" value="{{old('description')}}" style="background:white;">
                                         @error('description')
                                         <p class="valid-feedback">{{$message}}</p>
                                         @enderror
@@ -198,16 +186,16 @@
                                     </div>
 
                                     <div>
-                                    <label for="image" class="form-label">Upload Image:</label>
-                                    <input type="file" name="image" class="@error('image') is-invalid @enderror">    
-                                    @error('image')
-                                     <p class="valid-feedback">{{$message}}</p>
-                                    @enderror
-                                </div>
+                                        <label for="image" class="form-label">Upload Image:</label>
+                                        <input type="file" name="image" class="@error('image') is-invalid @enderror">    
+                                        @error('image')
+                                        <p class="valid-feedback">{{$message}}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="{{route('package.index')}}" class="btn btn-secondary">Back</a>
-                                    <button class="btn btn-primary">Save</button>
+                                    <a href="{{route('category.index')}}" class="btn btn-secondary">Back</a>
+                                    <input type="submit" class="btn btn-primary" value="Save">
                                 </div>
                             </div>
                         </div>

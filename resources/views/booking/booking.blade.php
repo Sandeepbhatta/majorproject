@@ -62,13 +62,20 @@
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('ratings.create')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+
+
+                        @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a href="{{route('admin.register')}}" class="dropdown-item">Sign Up</a>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </nav>
             </div>
@@ -140,69 +147,72 @@
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
+            @php
+                $bookingStart = now();
+                $bookingEnd = $bookingStart->addMinutes(1);
+
+                session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
+            @endphp
                 <div class="row g-14">
                     <div class="text-center text-sm-end">
-                        <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Booking</a> 
+                        <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a>
                     </div>
-                    <div class="col-sm-12 ">
+                    <div class="col-sm-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            @if(Session::has('success'))
-                            <div class="alert alert-success">
-                                {{Session::get('success')}}
-                            </div>
-                            @endif
+                          
                             <h6 class="mb-4">Booking List</h6>
                             <table class="table table-hover" id="booking-table">
                                 <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Booking Date</th>
-                                        <th scope="col">AD Payment Status</th>
-                                        <th scope="col">Package</th>
-                                        <th scope="col">Start Date</th>
-                                        <th scope="col">End Date</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    @if( $bookings->isNOtEmpty() )
-                                    @foreach( $bookings as $booking )
-                                    <tr>
-                                        <td scope="col">{{ $booking->id }}</td>
-                                        <td scope="col">{{ $booking->name }}</td>
-                                        <td scope="col">{{ $booking->booking_date }}</td>
-                                        <td scope="col">{{ $booking->price_status }}</td>
-                                        <td scope="col">{{ $booking->booking_type }}</td>
-                                        <td scope="col">{{ $booking->start_date}}</td>
-                                        <td scope="col">{{ $booking->end_date}} </td>
-                                        <td>
-                                            <a href="{{ route('booking.edit',$booking->id) }}" class="btn btn-info" >Edit</a>
-                                            <a href="#" onClick="deleteBooking({{$booking->id}})" class="btn btn-primary">Delete</a>
-                                            <form id="booking-edit-action-{{$booking->id}}" action="{{route('booking.destroy',$booking->id)}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
-                                            </form>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Booking Date</th>
+                                    <th scope="col">AD Payment Status</th>
+                                    <th scope="col">Package</th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                @if($bookings->isNotEmpty())
+                                    @foreach($bookings as $booking)
+                                        <tr>
+                                            <td scope="col">{{ $booking->id }}</td>
+                                            <td scope="col">{{ $booking->name }}</td>
+                                            <td scope="col">{{ $booking->mobile }}</td>
+                                            <td scope="col">{{ $booking->email }}</td>
+                                            <td scope="col">{{ $booking->booking_date }}</td>
+                                            <td scope="col">{{ $booking->price_status }}</td>
+                                            <td scope="col">{{ $booking->booking_type }}</td>
+                                            <td scope="col">{{ $booking->start_date }}</td>
+                                            <td scope="col">{{ $booking->end_date }}</td>
+                                            <td>
+                                                <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
+                                                <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>
+                                                <form id="booking-edit-action-{{ $booking->id }}" action="{{ route('booking.destroy', $booking->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </td>
+                                        </tr>
                                     @endforeach
-                                    
-                                    @else
+                                @else
                                     <tr>
-                                        <tdcolspan="6">Record Not Found</td>
+                                        <td colspan="6">Record Not Found</td>
                                     </tr>
-
-                                    @endif
+                                @endif
                                 </thead>
                             </table>
                         </div>
                         <div class="mt-2">
                             {{ $bookings->links() }}
                         </div>
-                        
                     </div>
                 </div>
             </div>
-            <!-- Table End -->
+
+            <!-- table ends -->
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">

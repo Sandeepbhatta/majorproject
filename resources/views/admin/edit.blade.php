@@ -40,7 +40,7 @@
                 
             </div>
             <div class="modal-footer">
-                <a href="{{route('admin.index')}}" class="btn btn-secondary">Back</a>
+                <a href="{{route('admin.dashboard')}}" class="btn btn-secondary">Back</a>
                 <input type="submit" class="btn btn-primary" value="Save">
             </div>
         </div>

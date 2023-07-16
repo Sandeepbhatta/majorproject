@@ -27,7 +27,13 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
-
+    <style>
+        #countdown {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
 
 </head>
 <body>
@@ -61,7 +67,12 @@
                     <div class="navbar-nav w-100">
                         <a href="index.html" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Pacakge</a>
+                        <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('ratings.create')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+
+
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -141,17 +152,52 @@
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
                     <form action="{{route('booking.store')}}" method="post">
                         @csrf
+                        @php
+                            $bookingStart = now();
+                            $bookingEnd = $bookingStart->addMinutes(1);
+
+                            session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
+                        @endphp   
                         <div class="modal-dialog " >
                             <div class="modal-content ">
                                 <div class="modal-header" >
                                     <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
-                                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                                    @if(Session::has('success'))
+                                            <div class="alert alert-success">
+                                                {{Session::get('success')}}
+                                            </div>
+                                        @endif
+                                        @if(session()->has('booking_start') && session()->has('booking_end') && now()->lte(session('booking_end')))
+                                            <div class="alert alert-success">
+                                                Your have 10 mins to book your date. Booking time is {{ (session('booking_end'))->setTimezone('Asia/Kathmandu')->format('H:i') }}
+                                            </div>
+                                        @else
+                                            <div class="alert alert-danger">
+                                                Your booking has expired
+                                            </div>
+                                    @endif
+
+                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
                                 <div class="modal-body ">
                                     <div class="form-group md-4">
                                         <label for="name" class="form-label">Booked by</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
                                         @error('name')
+                                        <p class="invalid-feeback">{{$message}}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group md-4">
+                                        <label for="mobile" class="form-label">Contact Number</label>
+                                        <input type="number" class="form-control @error('mobile') is-invalid @enderror"   name="mobile" placeholder="Contact Number" value="{{old('mobile')}}" style="background:white;">
+                                        @error('mobile')
+                                        <p class="invalid-feeback">{{$message}}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group md-4">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"   name="email" placeholder="Email" value="{{old('email')}}" style="background:white;">
+                                        @error('email')
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
@@ -181,7 +227,7 @@
                                         <select class="form-control" name="price_status" >
                                         <option disabled selected>Choose One</option>
                                         <option value="yes">Yes</option>
-                                        <option value="no">No</option>
+                                        <!-- <option value="no">No</option> -->
                                         </select>
                                     </div>  
                                     <div class="form-group md-3 " >
@@ -207,6 +253,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </form>
             <!-- pop up model end -->
             <!-- Footer Start -->
@@ -243,5 +290,13 @@
     <script src="{{asset('panel/js/main.js')}}"></script>
 
 </body>
+<!-- @push('scripts')
+<script>
+    setTimeout(function() {
+        window.location.href = "{{ route('booking.index') }}";
+    }, 60000); // 60000 milliseconds = 1 minute
+</script>
+@endpush -->
+
 
 </html>

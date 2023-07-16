@@ -25,6 +25,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
 </head>
 <body>
  
@@ -51,18 +53,19 @@
                             <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}} {{Auth::guard('admin')->user()->email}}</h6>
-                            <!-- <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span> -->
+                            <h6 class="mb-0"></h6>
+                            <!-- <span>SuperAdmin Name : </span> -->
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{asset('index.blade.php')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('admin.dashboard')}}"  class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
-                        <a href="{{route('ratings.create')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
                         
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('ratings.create')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+
                         @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
@@ -100,7 +103,7 @@
                                     
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                                        <h6 class="fw-normal mb-0"></h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -111,7 +114,7 @@
                                 <div class="d-flex align-items-center">
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                                        <h6 class="fw-normal mb-0"></h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -145,7 +148,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
+                            <span class="d-none d-lg-inline-flex"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
@@ -156,9 +159,134 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            @yield('admin') 
+            <body>
+            <div class="container-fluid pt-4 px-4">
+            <div class="row g-14">
+            <div class="text-center text-sm-end">
+                <h5 class="modal-title" id="model-title" style="Color:Black">Wallet Payment</h5>
+                <button id="payment-button">Pay with Khalti</button>
+            <script>
+                    var config = {
+                        // replace the publicKey with yours
+                        "publicKey": "{{config('app.khalti_public_key')}}",
+                        "productIdentity": "1234567890",
+                        "productName": "Dragon",
+                        "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+                        "paymentPreference": [
+                            "KHALTI",
+                            "EBANKING",
+                            "MOBILE_BANKING",
+                            "CONNECT_IPS",
+                            "SCT",
+                            ],
+                        "eventHandler": {
+                            onSuccess (payload) {
+                                $.ajax({
+                                    type:'POST',
+                                    url:"{{route('khalti.verifyPayment')}}",
+                                    data:{
+                                        token : payload['token'],
+                                        amount: payload.amount,
+                                        "_token" : "{{csrf_token()}}"
+                                    }
+                                    success : function(res){
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "{{route('khalti.storePayment')}}",
+                                            data:{
+                                                response : res,
+                                                _token :"{{ csrf_token()}}",
+                                                paymentMethodId : 'Khalti',
+                                                status : true,
+                                               referenceNumber : '',
+                                                paidAmount : '',
+
+
+                                            }
+                                        })
+                                        console.log(res);
+
+                                    }
+                                });
+                                // hit merchant api for initiating verfication
+                                console.log(payload);
+                            },
+                            onError (error) {
+                                console.log(error);
+                            },
+                            onClose () {
+                                console.log('widget is closing');
+                            }
+                        }
+                    };
+
+                    var checkout = new KhaltiCheckout(config);
+                    var btn = document.getElementById("payment-button");
+                    btn.onclick = function () {
+                        // minimum transaction amount must be 10, i.e 1000 in paisa.
+                        checkout.show({amount: 100000});
+                    }
+            </script>
+                           <!-- Table Start -->
+        <div class="container-fluid pt-4 px-4">
+        <div class="row g-14">
+            <div class="text-center text-sm-end">
+                <a href="{{ route('invoice.payment') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Payment</a> 
+            </div>
+            <div class="col-sm-12 ">
+                <div class="bg-secondary rounded h-100 p-4">
+                    @if(Session::has('success'))
+                    <div class="alert alert-success">
+                        {{Session::get('success')}}
+                </div>
+                    @endif
+                    <h6 class="mb-4">Payment List</h6>
+                    <table class="table table-hover" id="booking-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Payment Amount</th>
+                                <th scope="col"></th>
+                                <th scope="col">Package</th>
+                                <th scope="col">Booking Type</th>
+                                <th scope="col"></th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            @if( $invoice->isNOtEmpty() )
+                            @foreach( $invoice as $invoice )
+                            <tr>
+                                <td scope="col">{{ $invoice->id }}</td>
+                                <td scope="col">{{ $invoice->email }}</td>
+                                <td scope="col">{{ $invoice->Payment_Amount }}</td>
+                                <td scope="col">{{ $invoice->package }}</td>
+                                <td scope="col">{{ $invoice->booking}}</td>
+                                <td>
+                                    <a href="{{ route('invoice.edit',$invoice->id) }}" class="btn btn-info" >Edit</a>
+                                    <a href="#" onClick="deleteinvoice({{$invoice->id}})" class="btn btn-primary">Delete</a>
+                                    <form id="invoice-edit-action-{{$invoice->id}}" action="{{route('invoice.destroy',$invoice->id)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                            
+                            @else
+                            <tr>
+                                <tdcolspan="6">Record Not Found</td>
+                            </tr>
+
+                            @endif
+                        </thead>
+                    </table>
+                </div>
+            </body>
+
+
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 mt-4">
+            <div class="container-fluid pt-3 px-4 mt-3 ">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">

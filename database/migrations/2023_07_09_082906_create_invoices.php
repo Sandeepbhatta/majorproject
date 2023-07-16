@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->longText('description');
-            $table->longText('features');
-            $table->string('image');
-
-
+        Schema::create('invoices', function (Blueprint $table) {
+            $table->id('invoice_id');
+            $table->string('mobile_number');
+            $table->float('amount',10,2);
+            $table->string('currency');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('invoices');
     }
 };
