@@ -17,10 +17,10 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $bookings = Bookings::orderBy('id', 'asc')->paginate(2);
+            $bookings = Bookings::orderBy('id', 'asc')->paginate(10);
             return response()->json($bookings);
         } else {
-            $bookings = Bookings::orderBy('id', 'asc')->paginate(2);
+            $bookings = Bookings::orderBy('id', 'asc')->paginate(10);
             return view('booking.booking', compact('bookings'));
         }
     }

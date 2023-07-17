@@ -10,6 +10,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use App\Models\Admin;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,6 +130,42 @@ Route::delete('/ratings/{rating}',[PackageController::class, 'destroy'])->name('
 
 
 /*---------------rating route ends--------------*/
+
+
+
+/*---------------forget password route ends--------------*/
+
+
+
+
+    Route::name('auth.')->group(function () {
+        Route::get('auth/email', function () {
+            $adminId = auth()->id();
+            $admin = Admin::find($adminId);
+            $email = $admin ? $admin->email : null;
+            return view('auth.password.email', ['email' => $email]);
+        })->name('password.request');
+
+    Route::post('auth/email', function (Request $request) {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $admin = Admin::where('email', $request->email)->first();
+
+        $status = Password::sendResetLink(
+            ['email' => $request->email]
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __('success')])
+            : back()->withErrors(['email' => __('Failed')]);
+    })->name('password.email');
+});
+
+/*---------------forget password route ends--------------*/
+
+
 
 
 

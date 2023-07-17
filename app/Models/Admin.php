@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 
 
-class Admin extends Authenticatable
-{
-        use HasApiTokens, HasFactory, Notifiable;
+class Admin extends Authenticatable implements CanResetPassword
+{   
+     
+    use HasApiTokens, HasFactory, Notifiable, CanResetPasswordTrait;
 
         /**
          * The attributes that are mass assignable.
