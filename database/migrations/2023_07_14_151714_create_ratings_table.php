@@ -6,29 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRatingsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('ratings', function (Blueprint $table) {
-            $table->id('rating_id');
-            $table->integer('user_id');
-            $table->integer('package_id');
-            $table->text('review');
+            $table->id();
+            $table->unsignedBigInteger('package_id');
+            $table->unsignedBigInteger('user_id');
             $table->integer('rating');
-            $table->tinyInteger('status')->nullable();
+            $table->text('review')->nullable();
             $table->timestamps();
+
+            $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('ratings');

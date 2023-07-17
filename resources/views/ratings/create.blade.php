@@ -158,9 +158,9 @@
                              <!-- Table Start -->
         <div class="container-fluid pt-4 px-4">
         <div class="row g-14">
-            <!-- <div class="text-center text-sm-end">
-                <a href="{{ route('invoice.payment') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Payment</a> 
-            </div> -->
+            <div class="text-center text-sm-end">
+                <a href="{{ route('ratings.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Rating</a> 
+            </div>
             <div class="col-sm-12 ">
                 <div class="bg-secondary rounded h-100 p-4">
                     @if(Session::has('success'))
