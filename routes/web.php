@@ -126,8 +126,6 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 // Route::match(['GET','POST'],'/addRating', [RatingsController::class, 'add'])->name('ratings.add');
 
 // Route::delete('/ratings/{rating}',[PackageController::class, 'destroy'])->name('ratings.destroy');
-Route::post('ratings', [RatingsController::class, 'addRating'])->name('ratings.add');
-
 // Route::post('/ratings', [RatingController::class, 'addRating'])->name('ratings.add');
 // Route::get('/ratings/average/{packageId}', [RatingController::class, 'calculateAverageRating'])->name('ratings.average');
 
