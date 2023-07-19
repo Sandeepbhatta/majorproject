@@ -15,9 +15,11 @@ class Category extends Model
         'name',
         'description',
         'feature',
-        'image',
-
-
-
+        // 'image',
     ];
+
+    public function packages()
+    {
+        return $this->belongsToMany(Package::class,'package_id', 'id');
+    }
 }

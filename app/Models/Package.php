@@ -14,8 +14,13 @@ class Package extends Model
         'discount',
         'description',
         'features',
-        'image'
+        // 'image'
 
         
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
 }

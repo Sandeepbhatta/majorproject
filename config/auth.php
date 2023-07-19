@@ -44,10 +44,7 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'Nadmin' => [
-            'driver' => 'session',
-            'provider' => 'nadmins',
-        ],
+        
     ],
 
     /*
@@ -76,10 +73,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'nadmins' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Nadmin::class,
-        ],
+        
 
         // 'users' => [
         //     'driver' => 'database',

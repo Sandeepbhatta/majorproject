@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
@@ -57,7 +58,7 @@ Route::prefix('admin')->group(function(){
 
 
 /*---------------User route--------------*/
-
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 
 /*---------------User route--------------*/
@@ -135,9 +136,7 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 
 
 
-/*---------------forget password route ends--------------*/
-
-
+/*---------------forget password route --------------*/
 
 
     Route::name('auth.')->group(function () {

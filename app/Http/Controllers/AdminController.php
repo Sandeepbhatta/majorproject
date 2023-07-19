@@ -108,10 +108,7 @@ class AdminController extends Controller
             // 'status' => 'required',
             
         ]);
-// mail try
 
-
-// mail try end
         if ($validator->passes()) {
             $admin = new Admin();
             $admin->name = $request->name;

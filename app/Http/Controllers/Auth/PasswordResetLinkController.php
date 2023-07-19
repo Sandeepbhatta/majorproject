@@ -37,8 +37,19 @@ class PasswordResetLinkController extends Controller
         );
 
         return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+            ? back()->with('status', __($status))
+            : back()->withInput($request->only('email'))
+            ->withErrors(['email' => __($status)]);
     }
+    
+    /**
+     * Display the password reset form.
+     */
+    public function resetPasswordForm(Request $request)
+    {
+        $token = $request->route('token'); // Retrieve the token from the request
+
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
 }

@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('package_id');
             $table->string('name');
             $table->string('mobile');
             $table->string('email');
@@ -26,6 +28,9 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->constrained();
+            $table->foreign('package_id')->references('id')->on('packages')->constrained();
         });
     }
 

@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         //     'status' => true,
                        
         // ]);
+        
         $this->call(RatingTableSeeder::class);
     }
 }
