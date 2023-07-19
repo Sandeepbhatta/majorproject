@@ -13,11 +13,9 @@ class UserController extends Controller
             $user = new user;
             $user->user = $request->user;
             $user->save();                          
-            return redirect('/')->with('success', 'New To-Do Added Successfully!');
-        }
-        else{
-            //task exists
-            return redirect('/')->with('error', 'To-Do Already Exists.');
+            return response()->json(['message' => 'New To-Do Added Successfully'], 201);
+        } else {
+            return response()->json(['error' => 'To-Do Already Exists'], 409);
         }
     }
     public function index()

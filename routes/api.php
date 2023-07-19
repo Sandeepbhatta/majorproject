@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/apitest',[ApiController::class, 'apitest'])->name('apitest');
-Route::get('/login',[AdminController::class, 'Index'])->name('login_form');   
+Route::get('/login',[AdminController::class, 'Index'])->name('login_form'); 
+Route::post('/login', [AdminController::class, 'login'])->name('admin.login');
+
 Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
 
 
@@ -34,6 +36,10 @@ Route::post('/booking',[BookingController::class, 'store'])->name('booking.store
 
 Route::get('/package',[PackageController::class, 'index'])->name('package.index');
 Route::post('/package',[PackageController::class, 'store'])->name('package.store');
+
+
+Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
+
 
 
 
