@@ -15,7 +15,7 @@ class Category extends Model
         'name',
         'description',
         'feature',
-        // 'image',
+        'image',
     ];
 
     public function packages()

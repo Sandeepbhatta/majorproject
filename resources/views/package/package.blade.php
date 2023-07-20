@@ -170,6 +170,7 @@
                                         <th scope="col">Discount</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Features</th>
+                                        <th scope="col">Category</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -182,6 +183,7 @@
                                         <td scope="col">{{ $package->discount }}</td>
                                         <td scope="col">{{ $package->description }}</td>
                                         <td scope="col">{{ $package->features}}</td>
+                                        <td scope="col">{{ $package->category->name}}</td>
                                         <td scope="col">{{ $package->image}} </td>
                                         <td>
                                             <a href="{{ route('package.edit',$package->id) }}" class="btn btn-info" >Edit</a>

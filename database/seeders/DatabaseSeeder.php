@@ -20,18 +20,16 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\Admin::factory(2)->create();
 
-        // \App\Models\Admin::factory()->create([
-        //     'name' => 'Test Admin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' =>Hash::make('password'),
-        //     'status' => true,
-        //     'name' => 'Test1',
-        //     'role' => 'superadmin',
-        //     'email' => 'admin1@gmail.com',
-        //     'password' =>Hash::make('password'),
-        //     'status' => true,
+        \App\Models\Admin::factory()->create([
+            'name' => 'Test Admin',
+            'email' => 'admin@gmail.com',
+            'password' =>Hash::make('password'),
+            'status' => true,
+            'name' => 'Test1',
+            'role' => 'superadmin',
+            'status' => true,
                        
-        // ]);
+        ]);
         
         $this->call(RatingTableSeeder::class);
     }

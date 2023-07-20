@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Category;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,14 +16,15 @@ class PackageController extends Controller
             $packages = Package::orderBy('id', 'asc')->paginate(2);
             return response()->json($packages);
         } else {
-            $package = Package::orderBy('id', 'asc')->paginate(2);
+            $package = Package::with('category','ratings')->orderBy('id', 'asc')->paginate(2);
             return view('package.package', ['packages' => $package]);
         }
     }
 
     public function create()
     {
-        return view('package.create');
+        $categories = Category::all(); // Retrieve all categories from the database
+        return view('package.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -31,29 +33,32 @@ class PackageController extends Controller
             'name' => ['required', 'string'],
             'price' => ['required'],
             'description' => 'required',
-            'features' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         if ($validator->passes()) {
             $package = new Package();
             $package->name = $request->name;
             $package->price = $request->price;
             $package->discount = $request->discount;
             $package->description = $request->description;
-            $package->features = implode(', ', $request->features);
-            $package->save();
-
-            if ($request->image) {
+            if ($request->has('category_id')) {
+                $package->category_id = $request->category_id;
+            }
+        
+            // Handle image upload
+            if ($request->hasFile('image')) {
                 $ext = $request->image->getClientOriginalExtension();
                 $newFileName = time() . '.' . $ext;
                 $request->image->move(public_path() . '/uploads/package/', $newFileName);
                 $package->image = $newFileName;
-                $package->save();
             }
+            
+
+            $package->save();
                 // get rating of the package
 
-            $rating = Rating::with('user')->where('package_id',$id)->get()->toArray();
+            $rating = Rating::with('user')->where('package_id', $package->id)->get()->toArray();
 
 
             if ($request->wantsJson()) {
@@ -88,7 +93,6 @@ class PackageController extends Controller
             'name' => ['required', 'string'],
             'price' => ['required'],
             'description' => 'required',
-            'features' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -98,7 +102,6 @@ class PackageController extends Controller
             $package->price = $request->price;
             $package->discount = $request->discount;
             $package->description = $request->description;
-            $package->features = implode(', ', $request->features);
             $package->save();
 
             if ($request->image) {
@@ -149,4 +152,5 @@ class PackageController extends Controller
             return view('search.results', ['results' => $results]);
         }
     }
+    
 }

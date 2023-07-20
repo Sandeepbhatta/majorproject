@@ -180,46 +180,55 @@
                                      <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
                                 <div class="modal-body ">
+                                @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                                     <div class="form-group md-4">
                                         <label for="name" class="form-label">Booked by</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
                                         @error('name')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="mobile" class="form-label">Contact Number</label>
                                         <input type="number" class="form-control @error('mobile') is-invalid @enderror"   name="mobile" placeholder="Contact Number" value="{{old('mobile')}}" style="background:white;">
                                         @error('mobile')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control @error('email') is-invalid @enderror"   name="email" placeholder="Email" value="{{old('email')}}" style="background:white;">
                                         @error('email')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="booking" class="form-label">Booking Date</label>
                                         <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
                                         @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="start" class="form-label">Start Date</label>
                                         <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
                                         @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="end" class="form-label">End Date</label>
                                         <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
                                         @error('date')
-                                        <p class="invalid-feeback">{{$message}}</p>
+                                        <p class="invalid-feeback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-1  "  >
@@ -230,20 +239,16 @@
                                         <!-- <option value="no">No</option> -->
                                         </select>
                                     </div>  
-                                    <div class="form-group md-3 " >
-                                        <label for ="form" class="form-label">Package Type</label>
-                                        <select class="form-control" name="booking_type" >
-                                        <option disabled selected>Choose Package</option>
-                                        <option value="wedding">Wedding</option>
-                                        <option value="babyshower">Baby Shower</option>
-                                        <option value="weaning">Weanig</option>
-                                        <option value="exhibition">Exhibition</option>
-                                        <option value="fair">Fair</option>
-                                        <option value="musicfestival">Music festival</option>
-                                        <option value="Cevent">Corporate Event</option>
-                                        </select>
-                                        <!-- <span id="typeError" class="text-danger"></span> -->
-                                    </div>
+                                    <div class="form-group md-1  "  >
+                                    <label for ="form" class="form-label">Select Package</label>
+                                    <select class="form-control" name="package_id" required>
+                                        <option value="">Select a Package</option>
+                                        @foreach ($packages as $package)
+                                            <option value="{{ $package->id }}">{{ $package->name }}</option>
+                                            
+                                        @endforeach
+                                    </select>
+                                    </div> 
                                     <!-- <label for="imageUpload">Upload Image:</label>
                                     <input type="file" id="imageUpload" name="imageUpload">                                    -->
                                 </div>

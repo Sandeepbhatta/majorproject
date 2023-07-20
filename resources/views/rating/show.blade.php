@@ -1,14 +1,23 @@
+<!-- Display Existing Ratings -->
+@foreach($ratings as $rating)
+    <div>
+        <p>Rating: {{ $rating->rating }}</p>
+        <p>Comment: {{ $rating->comment }}</p>
+        <p>User: {{ $rating->user->name }}</p>
+        <hr>
+    </div>
+@endforeach
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-    <title>SuperAdmin panel</title>
+    <meta charset="utf-8">
+    <title>Admin panel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <!-- <meta name="csrf-token" content="{{ csrf_token() }}" /> -->
-
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -27,23 +36,21 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
-
-
 </head>
-
 <body>
+ 
     <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+        <div class="container-fluid position-relative d-flex p-0">
+            <!-- Spinner Start -->
+            <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-        </div>
-        <!-- Spinner End -->
-
-
-        <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3">
+            <!-- Spinner End -->
+            
+            <!-- Sidebar Start -->
+            <div class="sidebar pe-4 pb-3">
                 
                 <nav class="navbar bg-secondary navbar-dark">
                     <a href="{{asset('index.blade.php')}}" class="navbar-brand mx-4 mb-3">
@@ -55,19 +62,19 @@
                             <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}}</h6>
-                            <!-- <span>SuperAdmin Name : user()->name</span> -->
+                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}} {{Auth::guard('admin')->user()->email}}</h6>
+                            <!-- <span>SuperAdmin Name : {{Auth::guard('admin')->user()->name}}</span> -->
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{asset('index.blade.php')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('users.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Users</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
-
-
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
+                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
+                        
                         @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
@@ -79,10 +86,8 @@
                     </div>
                 </nav>
             </div>
-        <!-- Sidebar End -->
-
-
-        <!-- Content Start -->
+            <!-- Sidebar End -->
+                    <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
@@ -92,16 +97,28 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                <form action="" method="GET" class="d-none d-md-flex ms-4">
+                    <input class="form-control bg-dark border-0" type="search" name="query" placeholder="Search">
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+
+                                    
+                                    <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            </a>
+                            <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
@@ -117,14 +134,13 @@
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
+                            <i class="fa fa-bell me-lg-2"></i>                        </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
                                 <h6 class="fw-normal mb-0">Profile updated</h6>
                                 <small>15 minutes ago</small>
                             </a>
+                          
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
                         </div>
@@ -143,78 +159,29 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-
-
-            <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
-            @php
-                $bookingStart = now();
-                $bookingEnd = $bookingStart->addMinutes(1);
-
-                session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
-            @endphp
-                <div class="row g-14">
-                    <div class="text-center text-sm-end">
-                        <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a>
+                <!-- Rating Submission Form -->
+                <form action="{{ route('ratings.store') }}" method="POST">
+                    @csrf
+                    <div>
+                        <label for="rating">Rating:</label>
+                        <select name="rating" id="rating">
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
                     </div>
-                    <div class="col-sm-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                          
-                            <h6 class="mb-4">Booking List</h6>
-                            <table class="table table-hover" id="booking-table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Mobile</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Booking Date</th>
-                                    <th scope="col">AD Payment Status</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
-                                    <th scope="col">Package Id</th>
-                                    <th scope="col">User Id</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                @if($bookings->isNotEmpty())
-                                    @foreach($bookings as $booking)
-                                        <tr>
-                                            <td scope="col">{{ $booking->id }}</td>
-                                            <td scope="col">{{ $booking->name }}</td>
-                                            <td scope="col">{{ $booking->mobile }}</td>
-                                            <td scope="col">{{ $booking->email }}</td>
-                                            <td scope="col">{{ $booking->booking_date }}</td>
-                                            <td scope="col">{{ $booking->price_status }}</td>
-                                            <td scope="col">{{ $booking->start_date }}</td>
-                                            <td scope="col">{{ $booking->end_date }}</td>
-                                            <td scope="col">{{ $booking->package->name }}</td>
-                                            <td scope="col">{{ $booking->user->name }}</td>
-                                            <td>
-                                                <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
-                                                <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>
-                                                <form id="booking-edit-action-{{ $booking->id }}" action="{{ route('booking.destroy', $booking->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6">Record Not Found</td>
-                                    </tr>
-                                @endif
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="mt-2">
-                            {{ $bookings->links() }}
-                        </div>
+                    <div>
+                        <label for="comment">Comment:</label>
+                        <textarea name="comment" id="comment" rows="3"></textarea>
                     </div>
-                </div>
-            </div>
+                    <input type="hidden" name="package_id" value="">
+                    <button type="submit">Submit Rating</button>
+                </form>
 
-            <!-- table ends -->
+                <!-- Display Average Rating -->
+                <p>Average Rating: {{ $averageRating }}</p>
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">
@@ -229,32 +196,19 @@
                     </div>
                 </div>
             </div>
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
+            <!--footer End -->
+            </div>
+            <!-- Content End -->
 
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
+              <!-- Back to Top -->
+              <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+            </div>  
+        </div> 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-
-
     <!-- Template Javascript -->
     <script src="{{asset('panel/js/main.js')}}"></script>
-
 </body>
 
 </html>
-<script>
-    function deleteBooking(id){
-        if(confirm("Are you sure you want to delete?")){
-           document.getElementById('booking-edit-action-' + id).submit(); 
-        }
-    }
-</script>

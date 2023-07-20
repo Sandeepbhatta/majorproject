@@ -35,14 +35,22 @@ class AdminController extends Controller
     public function Login(Request $request){
         // dd($request->all());
         
-            $credentials = $request->only('email', 'password');
-    
-            if (Auth::guard('admin')->attempt($credentials)) {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            if ($request->wantsJson()) {
                 return response()->json(['message' => 'Login successfully'], 200);
             } else {
-                return response()->json(['error' => 'Invalid email or password'], 401);
+                return redirect()->route('admin.dashboard')->with('success', 'Login successfully');
             }
-        
+        } else {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Invalid email or password'], 401);
+            } else {
+                $error = 'Invalid email or password';
+                return view('admin.admin_login', compact('error'));
+            }
+        }
     }//end method
     public function Logout(){
         Auth::guard('admin')->logout();

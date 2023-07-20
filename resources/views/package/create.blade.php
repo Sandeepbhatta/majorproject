@@ -167,28 +167,28 @@
                                         <label for="name" class="form-label">Package Name</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
                                         @error('name')
-                                        <p class="valid-feedback">{{$message}}</p>
+                                        <p class="valid-feedback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="price" class="form-label">Price</label>
                                         <input type="number" class="form-control @error('Price') is-invalid @enderror" name="price" placeholder="Price" value="{{ old('Price') }}" style="background:white;">
                                         @error('Price')
-                                            <p class="valid-feedback">{{ $message }}</p>
+                                            <p class="valid-feedback text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="discount" class="form-label">Discount</label>
                                         <input type="number" class="form-control @error('number') is-invalid @enderror"   name="discount" placeholder="Discount" value="{{old('discount')}}" style="background:white;">
                                         @error('discount')
-                                        <p class="valid-feedback">{{$message}}</p>
+                                        <p class="valid-feedback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group md-4">
                                         <label for="description" class="form-label"></label>
                                         <input type="text" size="100"class="form-control @error('date') is-invalid @enderror"  name="description" placeholder="Description" value="{{old('description')}}" style="background:white;">
                                         @error('description')
-                                        <p class="valid-feedback">{{$message}}</p>
+                                        <p class="valid-feedback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group my-1 py-2">
@@ -196,12 +196,22 @@
                                         <input type="checkbox" name="features[]" checked value="Decoration and Design">Decoration and Design<br>
                                         <input type="checkbox"value="Customized Theme"  checked  name="features[]"  value="Customized Theme">Customized Theme <br>
                                     </div>
+                                    <div class="form-group md-3 "  >
+                                    <label for ="form" class="form-label">Select Category</label>
+                                    <select class="form-control"name="category_id" required>
+                                        <option value="">Select a Category</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            
+                                        @endforeach
+                                    </select>
+                                    </div>
 
                                     <div>
                                         <label for="image" class="form-label">Upload Image:</label>
                                         <input type="file" name="image" class="@error('image') is-invalid @enderror">    
                                         @error('image')
-                                        <p class="valid-feedback">{{$message}}</p>
+                                        <p class="valid-feedback text-danger">{{$message}}</p>
                                         @enderror
                                     </div>
                                 </div>

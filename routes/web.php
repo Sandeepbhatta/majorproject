@@ -10,7 +10,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MailController;
-use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Http\Request;
@@ -121,14 +121,9 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 //category route ends
 
 /*---------------rating route --------------*/
-
-// Route::get('/ratings/create', [RatingsController::class, 'create'])->name('ratings.create');
-// Route::post('/ratings', [RatingsController::class, 'store'])->name('ratings.store');
-// Route::match(['GET','POST'],'/addRating', [RatingsController::class, 'add'])->name('ratings.add');
-
-// Route::delete('/ratings/{rating}',[PackageController::class, 'destroy'])->name('ratings.destroy');
-// Route::post('/ratings', [RatingController::class, 'addRating'])->name('ratings.add');
-// Route::get('/ratings/average/{packageId}', [RatingController::class, 'calculateAverageRating'])->name('ratings.average');
+Route::get('/ratings', [RatingController::class, 'index'])
+    ->name('ratings.index');
+Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
 
 
 
@@ -137,7 +132,6 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 
 
 /*---------------forget password route --------------*/
-
 
     Route::name('auth.')->group(function () {
         Route::get('auth/email', function () {

@@ -15,15 +15,12 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('booking_id');
+            $table->integer('user_id');
+            $table->integer('booking_id');
             $table->string('mobile_number');
             $table->float('amount',10,2);
             $table->string('currency');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->constrained();
-            $table->foreign('booking_id')->references('id')->on('bookings')->constrained();
         });
     }
 

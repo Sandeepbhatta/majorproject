@@ -62,7 +62,7 @@
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
-                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
+                        <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
                         
                         @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">

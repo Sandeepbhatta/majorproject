@@ -8,30 +8,24 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->longText('description');
-            $table->longText('features');
-            $table->string('image');
-
-
+            $table->integer('package_id');
+            $table->integer('user_id');
+            $table->integer('rating');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('ratings');
     }
 };

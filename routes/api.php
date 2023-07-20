@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 
 /*
@@ -18,27 +19,24 @@ use App\Http\Controllers\PackageController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::post('/register', [UserController::class, 'NewClient'])->name('register');
+Route::post('/login', [UserController::class, 'login'])->name('login');
+
+Route::group(['middleware' => 'auth:api'], function () {
+    
+
+    Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');
+    Route::post('/createbooking',[BookingController::class, 'store'])->name('booking');
+    
+    
+    Route::get('/package',[PackageController::class, 'index'])->name('package.index');
+    Route::post('/package',[PackageController::class, 'store'])->name('package.store');
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/userdashboard', [UserController::class, 'userdashboard'])->name('userdashboard');
 });
-Route::get('/apitest',[ApiController::class, 'apitest'])->name('apitest');
-Route::get('/login',[AdminController::class, 'Index'])->name('login_form'); 
-Route::post('/login', [AdminController::class, 'login'])->name('admin.login');
 
-Route::get('/register',[AdminController::class, 'Register'])->name('admin.register');
-
-
-
-
-Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');
-Route::post('/booking',[BookingController::class, 'store'])->name('booking.store');
-
-
-Route::get('/package',[PackageController::class, 'index'])->name('package.index');
-Route::post('/package',[PackageController::class, 'store'])->name('package.store');
-
-
-Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
 
 

@@ -16,13 +16,13 @@ class RatingTableSeeder extends Seeder
      */
     public function run()
     {
-        $ratingRecords=[
-            ['id'=>1,'user_id' => 1, 'package_id' =>1, 'review'=>"very good",'rating'=>4,'status'=>0],
-            ['id'=>2,'user_id' => 1, 'package_id' =>2, 'review'=>"nice good",'rating'=>5,'status'=>0],
-            ['id'=>3,'user_id' => 2, 'package_id' =>1, 'review'=>"very good",'rating'=>1,'status'=>0],
+        // $ratingRecords=[
+        //     ['id'=>1,'user_id' => 1, 'package_id' =>1, 'review'=>"very good",'rating'=>4,'status'=>0],
+        //     ['id'=>2,'user_id' => 1, 'package_id' =>2, 'review'=>"nice good",'rating'=>5,'status'=>0],
+        //     ['id'=>3,'user_id' => 2, 'package_id' =>1, 'review'=>"very good",'rating'=>1,'status'=>0],
 
-        ];
-        Rating::insert($ratingRecords);
+        // ];
+        // Rating::insert($ratingRecords);
 
 
     }

@@ -16,15 +16,14 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             // $table->id('package_id');
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->integer('category_id');
             $table->string('name');
             $table->integer('price');
             $table->float('discount')->nullable();
             $table->longText('description');
-            $table->string('features');
-            // $table->string('image');
+            $table->string('features')->nullable();
+            $table->string('image');
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories')->constrained();
         });
     }
 
