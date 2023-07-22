@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 
@@ -23,19 +24,24 @@ use App\Http\Controllers\PackageController;
 
 Route::post('/register', [UserController::class, 'NewClient'])->name('register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/package',[PackageController::class, 'index'])->name('package.index');
 
 Route::group(['middleware' => 'auth:api'], function () {
     
-
-    Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');
+    
+    Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');  
     Route::post('/createbooking',[BookingController::class, 'store'])->name('booking');
     
     
-    Route::get('/package',[PackageController::class, 'index'])->name('package.index');
     Route::post('/package',[PackageController::class, 'store'])->name('package.store');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/userdashboard', [UserController::class, 'userdashboard'])->name('userdashboard');
+    Route::get('/ratings', [UserController::class, 'ratings'])->name('ratings');
 });
+
+
+Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+Route::post('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
 
 
 

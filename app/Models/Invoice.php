@@ -9,8 +9,16 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'mobile_number',
-        'amount',
+        'payment_id',
+        'user_id', 
+        'amount', 
+        'status',
+        'booking_id'
+
     ];
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class,'booking_id', 'id');
+    }
 
 }

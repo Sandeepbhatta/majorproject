@@ -1,12 +1,4 @@
-<!-- Display Existing Ratings -->
-@foreach($ratings as $rating)
-    <div>
-        <p>Rating: {{ $rating->rating }}</p>
-        <p>Comment: {{ $rating->comment }}</p>
-        <p>User: {{ $rating->user->name }}</p>
-        <hr>
-    </div>
-@endforeach
+
 
 
 <!DOCTYPE html>
@@ -67,13 +59,13 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{asset('index.blade.php')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('users.index')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Users</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
-                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
+                        <a href="{{route('invoice.initiatePayment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
+                        <a href="{{route('ratings.index')}}" class="nav-item nav-link active "><i class="fa fa-table me-2"></i>Rating & review</a>
                         
                         @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
@@ -90,105 +82,18 @@
                     <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
-                </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form action="" method="GET" class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" name="query" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
 
-                                    
-                                    <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                          
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- Navbar End -->
-                <!-- Display Existing Ratings -->
-                    @if($ratings->count() > 0)
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Rating</th>
-                                    <th>Comment</th>
-                                    <th>User</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($ratings as $rating)
-                                    <tr>
-                                        <td>{{ $rating->rating }}</td>
-                                        <td>{{ $rating->comment }}</td>
-                                        <td>{{ $rating->user->name }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <p>No ratings available.</p>
-                    @endif
+                    <!-- Display Existing Ratings -->
+                    
 
-                    <!-- Rating Submission Form -->
-                    <form action="{{ route('ratings.store') }}" method="POST">
+                    <form action="{{ route('ratings.store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+
                         <div>
                             <label for="rating">Rating:</label>
-                            <select name="rating" id="rating">
+                            <select name="rating" id="rating" required>
+                                <option value="">Select a Rating</option>
                                 <option value="1">1 Star</option>
                                 <option value="2">2 Stars</option>
                                 <option value="3">3 Stars</option>
@@ -196,33 +101,33 @@
                                 <option value="5">5 Stars</option>
                             </select>
                         </div>
+
                         <div>
                             <label for="comment">Comment:</label>
                             <textarea name="comment" id="comment" rows="3"></textarea>
                         </div>
-                        <input type="hidden" name="package_id" value="">
+
+                        <div class="form-group md-3">
+                            <label for="form" class="form-label">Select Package</label>
+                            <select class="form-control" name="package_id" required>
+                                <option value="">Select a Package</option>
+                                @foreach ($packages as $package)
+                                    <option value="{{ $package->id }}">{{ $package->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <button type="submit">Submit Rating</button>
                     </form>
 
-                    <!-- Display Average Rating -->
-                    <p>Average Rating: {{ $averageRating }}</p>
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 mt-4">
-                <div class="bg-secondary rounded-top p-4 mt-3">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start ">
-                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            Designed By <a href="#">TEAM YFJ</a>
-                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--footer End -->
-            </div>
-            <!-- Content End -->
+                     
+                        <!-- Display Average Ratings for each Package -->
+                        @foreach ($packages as $package)
+                            <div>
+                                Package ID: {{ $package->id }}
+                                Average Rating: {{ $averageRatingsByPackage[$package->id] }}
+                            </div>
+                        @endforeach
 
               <!-- Back to Top -->
               <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

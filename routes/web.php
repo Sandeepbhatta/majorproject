@@ -95,9 +95,11 @@ Route::delete('/category/{category}',[CategoryController::class, 'destroy'])->na
 // Route::get('/search/{category}', [CategoryController::class, 'search'])->name('category.search');
 
 
-Route::get('/invoice',[InvoiceController::class, 'Index'])->name('invoice.payment');
-Route::post('/khalti/payment/verify',[InvoiceController::class, 'verifyPayment'])->name('khalti.verifyPayment');
-Route::post('/khalti/payment/store',[InvoiceController::class, 'storePayment'])->name('khalti.storePayment');
+Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+Route::post('/invoice/initiate', [InvoiceController::class, 'initiateinvoice']);
+Route::post('/invoice/webhook', [InvoiceController::class, 'khaltiWebhook']);
+
 
 
 
@@ -121,9 +123,8 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 //category route ends
 
 /*---------------rating route --------------*/
-Route::get('/ratings', [RatingController::class, 'index'])
-    ->name('ratings.index');
-Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+Route::get('/ratings', [RatingController::class, 'index'])->name('ratings.index');
+Route::middleware('admin')->post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
 
 
 

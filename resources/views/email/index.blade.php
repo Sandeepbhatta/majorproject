@@ -28,7 +28,8 @@
                 <td>{{ $booking->booking_date }}</td>
                 <td>{{ $booking->start_date }}</td>
                 <td>{{ $booking->end_date }}</td>
-                <td>{{ $booking->booking_type}}</td>
+                <td >{{ $booking->package->name }}</td>
+
             </tr>
         </tbody>
     </table>

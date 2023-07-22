@@ -61,11 +61,11 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('category.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.initiatePayment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
                         @if(Auth::guard('admin')->user()->role == "superadmin")
@@ -92,12 +92,12 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form  class="d-none d-md-flex ms-4" method="GET">
+                <!-- <form  class="d-none d-md-flex ms-4" method="GET">
                     <input class="form-control bg-dark border-0" name="query" type="search" placeholder="Search">
              
-                </form>
+                </form> -->
                 <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
+                    <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-envelope me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Message</span>
@@ -115,8 +115,8 @@
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">See all message</a>
                         </div>
-                    </div>
-                    <div class="nav-item dropdown">
+                    </div> -->
+                    <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
@@ -129,15 +129,15 @@
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
+                            <!-- <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a> -->
                             <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
             </div>
             <!-- Table End -->
             <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4 mt-4">
+            <!-- <div class="container-fluid pt-4 px-4 mt-4">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">
@@ -220,7 +220,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Footer End -->
         </div>
         <!-- Content End -->

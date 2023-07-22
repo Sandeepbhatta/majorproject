@@ -58,13 +58,12 @@
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="{{route('admin.dashboard')}}"  class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.initiatePayment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
                         @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
@@ -88,11 +87,11 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form action="" method="GET" class="d-none d-md-flex ms-4">
+                <!-- <form action="" method="GET" class="d-none d-md-flex ms-4">
                     <input class="form-control bg-dark border-0" type="search" name="query" placeholder="Search">
-                </form>
+                </form> -->
                 <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
+                    <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-envelope me-lg-2"></i>
                         </a>
@@ -144,89 +143,26 @@
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
+                            <!-- <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a> -->
                             <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
             </nav>
             <!-- Navbar End -->
-            <body>
+
             <div class="container-fluid pt-4 px-4">
-            <div class="row g-14">
+            <!-- <div class="row g-14"> -->
             <div class="text-center text-sm-end">
                 <h5 class="modal-title" id="model-title" style="Color:Black">Wallet Payment</h5>
-                <button id="payment-button">Pay with Khalti</button>
-            <script>
-                    var config = {
-                        // replace the publicKey with yours
-                        "publicKey": "{{config('app.khalti_public_key')}}",
-                        "productIdentity": "1234567890",
-                        "productName": "Dragon",
-                        "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
-                        "paymentPreference": [
-                            "KHALTI",
-                            "EBANKING",
-                            "MOBILE_BANKING",
-                            "CONNECT_IPS",
-                            "SCT",
-                            ],
-                        "eventHandler": {
-                            onSuccess (payload) {
-                                $.ajax({
-                                    type:'POST',
-                                    url:"{{route('khalti.verifyPayment')}}",
-                                    data:{
-                                        token : payload['token'],
-                                        amount: payload.amount,
-                                        "_token" : "{{csrf_token()}}"
-                                    }
-                                    success : function(res){
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "{{route('khalti.storePayment')}}",
-                                            data:{
-                                                response : res,
-                                                _token :"{{ csrf_token()}}",
-                                                paymentMethodId : 'Khalti',
-                                                status : true,
-                                               referenceNumber : '',
-                                                paidAmount : '',
-
-
-                                            }
-                                        })
-                                        console.log(res);
-
-                                    }
-                                });
-                                // hit merchant api for initiating verfication
-                                console.log(payload);
-                            },
-                            onError (error) {
-                                console.log(error);
-                            },
-                            onClose () {
-                                console.log('widget is closing');
-                            }
-                        }
-                    };
-
-                    var checkout = new KhaltiCheckout(config);
-                    var btn = document.getElementById("payment-button");
-                    btn.onclick = function () {
-                        // minimum transaction amount must be 10, i.e 1000 in paisa.
-                        checkout.show({amount: 100000});
-                    }
-            </script>
                            <!-- Table Start -->
         <div class="container-fluid pt-4 px-4">
         <div class="row g-14">
@@ -281,12 +217,49 @@
                             @endif
                         </thead>
                     </table>
-                </div>
-            </body>
+                <!-- </div> -->
+                <button id="payment-button">Pay with Khalti</button>
+
+                <script>
+                    var config = {
+                        // Replace the publicKey with yours
+                        "publicKey": "test_public_key_0ad86f4788fb406ca2a80e928a901982",
+                        "productIdentity": "1234567890",
+                        "productName": "Product Name",
+                        "productUrl": "https://example.com/product-url",
+                        "paymentPreference": [
+                            "KHALTI",
+                            "EBANKING",
+                            "MOBILE_BANKING",
+                            "CONNECT_IPS",
+                            "SCT",
+                        ],
+                        "eventHandler": {
+                            onSuccess(payload) {
+                                // Hit merchant API for initiating verification
+                                console.log(payload);
+                            },
+                            onError(error) {
+                                console.log(error);
+                            },
+                            onClose() {
+                                console.log('Widget is closing');
+                            }
+                        }
+                    };
+
+                    var checkout = new KhaltiCheckout(config);
+                    var btn = document.getElementById("payment-button");
+                    btn.onclick = function () {
+                        // Minimum transaction amount must be 10, i.e 1000 in paisa.
+                        checkout.show({ amount: 1000 });
+                    }
+                </script>
+
 
 
             <!-- Footer Start -->
-            <div class="container-fluid pt-3 px-4 mt-3 ">
+            <!-- <div class="container-fluid pt-3 px-4 mt-3 ">
                 <div class="bg-secondary rounded-top p-4 mt-3">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start ">
@@ -298,7 +271,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!--footer End -->
             </div>
             <!-- Content End -->

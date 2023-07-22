@@ -11,24 +11,20 @@ return new class extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->integer('booking_id');
-            $table->string('mobile_number');
-            $table->float('amount',10,2);
-            $table->string('currency');
+            $table->string('transaction_id');
+            $table->integer('amount');
+            $table->string('status');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('invoices');

@@ -2,7 +2,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Rating; // Make sure to import the Rating model
+
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -68,6 +71,17 @@ class UserController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+    public function ratings()
+    {
+        // Get the authenticated user's ID
+        $user_id = Auth::id();
+
+        // Fetch ratings for the authenticated user from the database
+        $ratings = Rating::where('user_id', $user_id)->get();
+
+        // Return the ratings data as JSON
+        return response()->json(['ratings' => $ratings]);
     }
     
 }
