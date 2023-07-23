@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  my-app:
+    image: majorproject
+    build: .
+    container_name: my-app
+    restart: always
+    ports: 
+      - 8000:8000
+    environment:
+      - APP_NAME=MajorProject
+      - APP_ENV=production
+      - APP_KEY=3e065ce45d564fff89598e5bdea753e2
+      - APP_DEBUG=true
+      - APP_URL=http://127.0.0.1:8000
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_DATABASE=project-db
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=Nepal@123
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+    - MYSQL_DATABASE=project-db
+    - MYSQL_USERNAME=root
+    - MYSQL_ROOT_PASSWORD=Nepal@123
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes: 
+      - mysqldb1:/db1/data1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "--user=${MYSQL_USER}", "--password=${MYSQL_PASSWORD}", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+volumes:
+  mysqldb1:
+    driver: local
