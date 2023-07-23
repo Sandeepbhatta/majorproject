@@ -27,14 +27,12 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
-    <style>
-        #countdown {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-    </style>
-
+<style>
+    .booked-date {
+        background-color: red;
+        color: white;
+    }
+</style>
 </head>
 <body>
 <div class="container-fluid position-relative d-flex p-0">
@@ -150,116 +148,187 @@
             <!-- <button type="submit" class="btn btn-info py-3 w-5 mb-2 col-xl-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Booking</button> -->
 
                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
-                    <form action="{{route('booking.store')}}" method="post">
-                        @csrf
-                        @php
-                            $bookingStart = now();
-                            $bookingEnd = $bookingStart->addMinutes(1);
+               <form action="{{ route('booking.store') }}" method="post">
+                    @csrf
+                    @php
+                        $bookingStart = now();
+                        $bookingEnd = $bookingStart->addMinutes(10);
+                        session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
+                    @endphp
 
-                            session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
-                        @endphp   
-                        <div class="modal-dialog " >
-                            <div class="modal-content ">
-                                <div class="modal-header" >
-                                    <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
-                                    @if(Session::has('success'))
-                                            <div class="alert alert-success">
-                                                {{Session::get('success')}}
-                                            </div>
-                                        @endif
-                                        @if(session()->has('booking_start') && session()->has('booking_end') && now()->lte(session('booking_end')))
-                                            <div class="alert alert-success">
-                                                Your have 10 mins to book your date. Booking time is {{ (session('booking_end'))->setTimezone('Asia/Kathmandu')->format('H:i') }}
-                                            </div>
-                                        @else
-                                            <div class="alert alert-danger">
-                                                Your booking has expired
-                                            </div>
-                                    @endif
-
-                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                                </div>
-                                <div class="modal-body ">
-                                @if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-                                    <div class="form-group md-4">
-                                        <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name')}}" style="background:white;">
-                                        @error('name')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="model-title" style="Color:Black">Create Booking</h5>
+                                @if(Session::has('success'))
+                                    <div class="alert alert-success">
+                                        {{ Session::get('success') }}
                                     </div>
-                                    <div class="form-group md-4">
-                                        <label for="mobile" class="form-label">Contact Number</label>
-                                        <input type="number" class="form-control @error('mobile') is-invalid @enderror"   name="mobile" placeholder="Contact Number" value="{{old('mobile')}}" style="background:white;">
-                                        @error('mobile')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
+                                @endif
+                                @if(session()->has('booking_start') && session()->has('booking_end') && now()->lte(session('booking_end')))
+                                    <div class="alert alert-success">
+                                        Your have 10 mins to book your date. Booking time is {{ (session('booking_end'))->setTimezone('Asia/Kathmandu')->format('H:i') }}
                                     </div>
-                                    <div class="form-group md-4">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror"   name="email" placeholder="Email" value="{{old('email')}}" style="background:white;">
-                                        @error('email')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
+                                @else
+                                    <div class="alert alert-danger">
+                                        Your booking has expired
                                     </div>
-                                    <div class="form-group md-4">
-                                        <label for="booking" class="form-label">Booking Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="start" class="form-label">Start Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="start_date" placeholder="Date" value="{{old('sdate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-4">
-                                        <label for="end" class="form-label">End Date</label>
-                                        <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="end_date" placeholder="Date" value="{{old('edate')}}" style="background:white;">
-                                        @error('date')
-                                        <p class="invalid-feeback text-danger">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group md-1  "  >
-                                        <label for ="form" class="form-label">Advance Payment</label>
-                                        <select class="form-control" name="price_status" >
-                                        <option disabled selected>Choose One</option>
-                                        <option value="yes">Yes</option>
-                                        <!-- <option value="no">No</option> -->
-                                        </select>
-                                    </div>  
-                                    <div class="form-group md-1  "  >
-                                    <label for ="form" class="form-label">Select Package</label>
-                                    <select class="form-control" name="package_id" required>
-                                        <option value="">Select a Package</option>
-                                        @foreach ($packages as $package)
-                                            <option value="{{ $package->id }}">{{ $package->name }}</option>
-                                            
-                                        @endforeach
-                                    </select>
-                                    </div> 
-                                    <!-- <label for="imageUpload">Upload Image:</label>
-                                    <input type="file" id="imageUpload" name="imageUpload">                                    -->
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="{{route('booking.index')}}" class="btn btn-secondary">Back</a>
-                                    <button class="btn btn-primary">Save</button>
-                                </div>
+                                @endif
                             </div>
-                        </div>
-                        
-                    </form>
+                            <div class="modal-body">
+                                @if($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                <div class="form-group md-4">
+                    <label for="booking" class="form-label">Booking Date</label>
+                    <input type="date" class="form-control @error('booking_date') is-invalid @enderror"
+                        pattern="\d{2}-\d{2}-\d{4}" name="booking_date" placeholder="Date" value="{{ old('booking_date') }}"
+                        style="background:white;">
+                    @error('booking_date')
+                        <p class="invalid-feeback text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="form-group md-4">
+                    <label for="start" class="form-label">Start Date</label>
+                    <input type="date" class="form-control @error('start_date') is-invalid @enderror"
+                        pattern="\d{2}-\d{2}-\d{4}" name="start_date" placeholder="Date" value="{{ old('start_date') }}"
+                        style="background:white;">
+                    @error('start_date')
+                        <p class="invalid-feeback text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="form-group md-4">
+                    <label for="end" class="form-label">End Date</label>
+                    <input type="date" class="form-control @error('end_date') is-invalid @enderror"
+                        pattern="\d{2}-\d{2}-\d{4}" name="end_date" placeholder="Date" value="{{ old('end_date') }}"
+                        style="background:white;">
+                    @error('end_date')
+                        <p class="invalid-feeback text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="form-group md-1">
+                    <label for="form" class="form-label">Select Package</label>
+                    <select class="form-control" name="package_id" required>
+                        <option value="">Select a Package</option>
+                        @foreach ($packages as $package)
+                            <option value="{{ $package->id }}">{{ $package->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @php
+                    $remainingMinutes = now()->diffInMinutes(session('booking_end'));
+                    $remainingSeconds = $remainingMinutes * 60;
+                @endphp
+                <span id="countdown">{{ sprintf('%02d:%02d', $remainingMinutes, $remainingSeconds) }}</span>
+                <a href="{{ route('booking.index') }}" class="btn btn-secondary">Back</a>
+                <button class="btn btn-primary" id="saveButton">Save</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        // Function to start the 1-minute timer
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var saveButton = document.getElementById('saveButton');
+
+            function updateCountdown() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = '00:00';
+                    saveButton.disabled = true;
+                    saveButton.textContent = 'Booking expired';
+                    saveButton.classList.remove('btn-primary');
+                    saveButton.classList.add('btn-secondary');
+                    saveButton.removeAttribute('type');
+
+                    // Redirect to the booking page with the message
+                    window.location.href = "{{ route('booking.index') }}?expired=true";
+                }
+            }
+
+            var timerInterval = setInterval(updateCountdown, 1000);
+        }
+
+        // Function to disable selected dates on the calendar
+        function disableSelectedDates(dates) {
+            $(".form-control[name='start_date'], .form-control[name='end_date']").datepicker({
+                beforeShowDay: function (date) {
+                    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                    return [dates.indexOf(string) == -1];
+                }
+            });
+        }
+
+        // Function to set the selected dates to be disabled
+        function setSelectedDates(start, end) {
+            var dates = [];
+            var currentDate = new Date(start);
+            var endDate = new Date(end);
+            while (currentDate <= endDate) {
+                var dateString = $.datepicker.formatDate('yy-mm-dd', currentDate);
+                dates.push(dateString);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            disableSelectedDates(dates);
+        }
+
+        // Call the functions on window load
+        window.onload = function () {
+            var duration = 600; // 1 minute (60 seconds)
+            var display = document.getElementById('countdown');
+            var startDate = new Date("{{ old('start_date') }}");
+            var endDate = new Date("{{ old('end_date') }}");
+
+            // Check if the booking is expired
+            var isExpired = "{{ request('expired') }}";
+            if (isExpired === 'true') {
+                display.textContent = 'Booking expired';
+                var saveButton = document.getElementById('saveButton');
+                saveButton.disabled = true;
+                saveButton.textContent = 'Booking expired';
+                saveButton.classList.remove('btn-primary');
+                saveButton.classList.add('btn-secondary');
+                saveButton.removeAttribute('type');
+            } else {
+                // Start the countdown timer if not expired
+                startTimer(duration, display);
+            }
+
+            if (startDate && endDate) {
+                setSelectedDates(startDate, endDate);
+            }
+
+            // Update the date picker when start_date or end_date changes
+            $(".form-control[name='start_date'], .form-control[name='end_date']").on("change", function () {
+                var start = new Date($("input[name='start_date']").val());
+                var end = new Date($("input[name='end_date']").val());
+                if (start && end) {
+                    setSelectedDates(start, end);
+                }
+            });
+        };
+    </script>
+</form>
+
+
             <!-- pop up model end -->
             <!-- Footer Start -->
             <!-- <div class="container-fluid pt-4 px-4 mt-4">

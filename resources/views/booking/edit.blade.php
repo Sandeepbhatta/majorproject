@@ -154,14 +154,6 @@
                                     <h5 class="modal-title" id="model-title" style="Color:Black">Edit Booking</h5>
                                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
-                                <div class="modal-body ">
-                                    <div class="form-group md-4">
-                                        <label for="name" class="form-label">Booked by</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"   name="name" placeholder="Name" value="{{old('name',$booking->name)}}" style="background:white;">
-                                        @error('name')
-                                        <p class="invalid-feeback">{{$message}}</p>
-                                        @enderror
-                                    </div>
                                     <div class="form-group md-4">
                                         <label for="booking" class="form-label">Booking Date</label>
                                         <input type="date" class="form-control @error('date') is-invalid @enderror" pattern="\d{2}-\d{2}-\d{4}"  name="booking_date" placeholder="Date" value="{{old('date',$booking->booking_date)}}" style="background:white;">
@@ -183,27 +175,14 @@
                                         <p class="invalid-feeback">{{$message}}</p>
                                         @enderror
                                     </div>
-                                    <div class="form-group md-1  "  >
-                                        <label for ="form" class="form-label">Advance Payment</label>
-                                        <select class="form-control" name="price_status" >
-                                        <option disabled selected>Choose One</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
+                                    <div class="form-group md-1">
+                                        <label for="form" class="form-label">Select Package</label>
+                                        <select class="form-control" name="package_id" required>
+                                            <option value="">Select a Package</option>
+                                            @foreach ($packages as $package)
+                                                <option value="{{ $package->id }}">{{ $package->name }}</option>
+                                            @endforeach
                                         </select>
-                                    </div>  
-                                    <div class="form-group md-3 " >
-                                        <label for ="form" class="form-label">Package Type</label>
-                                        <select class="form-control" name="booking_type" >
-                                        <option disabled selected>Choose Package</option>
-                                        <option value="wedding">Wedding</option>
-                                        <option value="babyshower">Baby Shower</option>
-                                        <option value="weaning">Weanig</option>
-                                        <option value="exhibition">Exhibition</option>
-                                        <option value="fair">Fair</option>
-                                        <option value="musicfestival">Music festival</option>
-                                        <option value="Cevent">Corporate Event</option>
-                                        </select>
-                                        <!-- <span id="typeError" class="text-danger"></span> -->
                                     </div>
                                     
                                 </div>

@@ -18,6 +18,7 @@ class UserController extends Controller
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
             $user->save();        
                 return response()->json(['message' => 'New To-Do Added Successfully!'], 201);

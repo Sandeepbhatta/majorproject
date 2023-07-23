@@ -38,13 +38,9 @@ class BookingController extends Controller
         
         $user_id = Auth::id(); //Auth::id();
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string'],
             'booking_date' => ['required', 'date'],
-            'price_status' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'email' => ['required', 'email'],
-            'mobile' => ['required', 'integer', 'digits:10'], // Validate for 10-digit integer
             'package_id' => 'required|exists:packages,id', // Validate package_id and ensure it exists in the packages table
 
         ]);
@@ -52,11 +48,7 @@ class BookingController extends Controller
         if ($validator->passes()) {
 
             $booking = new Bookings();
-            $booking->name = $request->name;
-            $booking->mobile = $request->mobile;
-            $booking->email = $request->email;
             $booking->booking_date = $request->booking_date;
-            $booking->price_status = $request->price_status;
             $booking->start_date = $request->start_date;
             $booking->end_date = $request->end_date;
             $booking->package_id = $request->package_id;
@@ -82,7 +74,7 @@ class BookingController extends Controller
 
     public function sendMailNotify($booking)
     {
-        $email = $booking->email; // Retrieve the email from the booking record
+        $email = $user_id->email; // Retrieve the email from the user record
 
         $data = [
             'title' => "Welcome to Your Function Junction",
@@ -116,22 +108,15 @@ class BookingController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string'],
-            'mobile' => ['required','interger','digits:10'],
-            'email' => ['required','email'],
+
             'booking_date' => ['required', 'date'],
-            'price_status' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
 
         if ($validator->passes()) {
             $booking = Bookings::find($id);
-            $booking->name = $request->name;
-            $booking->mobile = $request->mobile;
-            $booking->email = $request->email;
             $booking->booking_date = $request->booking_date;
-            $booking->price_status = $request->price_status;
             $booking->start_date = $request->start_date;
             $booking->end_date = $request->end_date;
             $booking->save();

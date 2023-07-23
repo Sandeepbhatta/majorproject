@@ -82,6 +82,13 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
+                            <input type="number" class="form-control @error('mobile') is-invalid @enderror" name="mobile" value="{{old('mobile')}}" placeholder="name@example.com">
+                            <label for="mobile">Contact number</label>
+                            @error('mobile')
+                            <p class="valid-feedback">{{$message}}</p>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password">
                             <label for="password">Password</label>
                             @error('password')

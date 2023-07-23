@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Package;
 use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule; 
 
@@ -16,15 +17,18 @@ class RatingController extends Controller
 {
     public function index(Request $request)
     {
-        $packages = Package::all(); // Retrieve all packages from the database
-    
+        $packages = Package::all(); 
+        $ratings = Rating::all(); // Fetch all ratings from the database
+        // Retrieve all packages from the database
+        
         // Calculate the average rating for each package and store it in an associative array
         $averageRatingsByPackage = [];
         foreach ($packages as $package) {
             $averageRatingByPackage = Rating::where('package_id', $package->id)->avg('rating');
             $averageRatingsByPackage[$package->id] = $averageRatingByPackage ?? 0;
         }
-    
+        
+        $ratings = Rating::all();
         // Return the JSON response with average ratings for each package
         if ($request->expectsJson()) {
             return response()->json([
@@ -42,9 +46,10 @@ class RatingController extends Controller
             'comment' => 'nullable|string',
             'package_id' => 'required|exists:packages,id',
         ]);
-    
+        
         $user_id = Auth::guard('admin')->user()->id;
         $packageId = $request->input('package_id');
+        
     
         // Check if the user has already rated this package
         $existingRating = Rating::where('user_id', $user_id)->where('package_id', $packageId)->first();
@@ -72,6 +77,7 @@ class RatingController extends Controller
             $averageRatingByPackage = Rating::where('package_id', $package->id)->avg('rating');
             $averageRatingsByPackage[$package->id] = $averageRatingByPackage ?? 0;
         }
+
     
         // Return the JSON response with average ratings for each package
         if ($request->expectsJson()) {
@@ -79,7 +85,7 @@ class RatingController extends Controller
                 'averageRatingsByPackage' => $averageRatingsByPackage,
             ]);
         } else {
-            return view('rating.index', compact('packages', 'averageRatingsByPackage'));
+            return view('rating.index', compact('packages', 'averageRatingsByPackage',));
         }
     }
 

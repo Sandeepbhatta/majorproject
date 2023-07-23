@@ -163,30 +163,22 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Mobile</th>
-                                    <th scope="col">Email</th>
                                     <th scope="col">Booking Date</th>
-                                    <th scope="col">AD Payment Status</th>
                                     <th scope="col">Start Date</th>
                                     <th scope="col">End Date</th>
                                     <th scope="col">Package Name</th>
-                                    <th scope="col">User Name</th>
+                                    <th scope="col">User Email</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 @if($bookings->isNotEmpty())
                                     @foreach($bookings as $booking)
                                         <tr>
-                                            <td scope="col">{{ $booking->id }}</td>
-                                            <td scope="col">{{ $booking->name }}</td>
-                                            <td scope="col">{{ $booking->mobile }}</td>
-                                            <td scope="col">{{ $booking->email }}</td>
+                                            <td scope="col">{{ $booking->id }}</td>                                
                                             <td scope="col">{{ $booking->booking_date }}</td>
-                                            <td scope="col">{{ $booking->price_status }}</td>
                                             <td scope="col">{{ $booking->start_date }}</td>
                                             <td scope="col">{{ $booking->end_date }}</td>
                                             <td scope="col">{{ $booking->package->name }}</td>
-                                            <td scope="col">{{ $booking->user->name }}</td>
+                                            <td scope="col">{{ $booking->user->email }}</td>
                                             <td>
                                                 <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
                                                 <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>
