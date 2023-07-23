@@ -132,35 +132,6 @@ Route::middleware('admin')->post('/ratings', [RatingController::class, 'store'])
 
 
 
-/*---------------forget password route --------------*/
-
-    Route::name('auth.')->group(function () {
-        Route::get('auth/email', function () {
-            $adminId = auth()->id();
-            $admin = Admin::find($adminId);
-            $email = $admin ? $admin->email : null;
-            return view('auth.password.email', ['email' => $email]);
-        })->name('password.request');
-
-    Route::post('auth/email', function (Request $request) {
-        $request->validate([
-            'email' => ['required', 'email'],
-        ]);
-
-        $admin = Admin::where('email', $request->email)->first();
-
-        $status = Password::sendResetLink(
-            ['email' => $request->email]
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __('success')])
-            : back()->withErrors(['email' => __('Failed')]);
-    })->name('password.email');
-});
-
-/*---------------forget password route ends--------------*/
-
 
 
 

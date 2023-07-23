@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\MailNotify;
 use App\Models\Bookings;
 use App\Models\Package;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -36,7 +37,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         
-        $user_id = Auth::id(); //Auth::id();
+        $user_id = Auth::guard('api')->user()->id;
         $validator = Validator::make($request->all(), [
             'booking_date' => ['required', 'date'],
             'start_date' => 'required',
@@ -55,7 +56,7 @@ class BookingController extends Controller
             $booking->user_id =  $user_id; // Add the logged-in user's ID
             $booking->save();
 
-            $this->sendMailNotify($request);
+            $this->sendMailNotify($booking, $user_id, $request);
 
             return response()->json(['message' => 'Booking added successfully']);
             if ($request->wantsJson()) {
@@ -72,9 +73,15 @@ class BookingController extends Controller
         }
     }
 
-    public function sendMailNotify($booking)
+    public function sendMailNotify($booking,$user_id,$request)
     {
-        $email = $user_id->email; // Retrieve the email from the user record
+        
+        $user = User::find($user_id); // Retrieve the user by their ID
+    if (!$user) {
+        $request->session()->flash('success', 'User Not found!');
+        return redirect()->route('booking.index');
+    }
+        $email = $user->email; // Retrieve the email from the user record
 
         $data = [
             'title' => "Welcome to Your Function Junction",
@@ -85,7 +92,7 @@ class BookingController extends Controller
         ];
 
         try {
-            Mail::to($booking->email)->send(new MailNotify($data));
+            Mail::to($user->email)->send(new MailNotify($data));
         } catch (Exception $th) {
             // Handle the exception
         }

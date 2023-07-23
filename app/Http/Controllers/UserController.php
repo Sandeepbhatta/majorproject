@@ -21,7 +21,7 @@ class UserController extends Controller
             $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
             $user->save();        
-                return response()->json(['message' => 'New To-Do Added Successfully!'], 201);
+                return response()->json(['message' => 'User Added Successfully!'], 201);
         
         } else{
             return response()->json(['message' => 'user already exist!'], 201);
@@ -63,6 +63,7 @@ class UserController extends Controller
                 'message' => 'Unauthorized',
             ], 401);
         }
+        
 
         $user = Auth::user();
         return response()->json([

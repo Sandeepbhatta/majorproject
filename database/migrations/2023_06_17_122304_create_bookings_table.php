@@ -17,14 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('package_id');
-            $table->string('name');
-            $table->string('mobile');
-            $table->string('email');
             $table->date('booking_date');
-            $table->string('price')->nullable();
-            $table->tinyInteger('booking_status')->default(0);
-            $table->string('price_status');
-            $table->string('booking_type')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
