@@ -83,7 +83,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'password' => $hashedPassword, // Hash the password
             'created_at' => Carbon::now(),
-            'role'=>$request->admin,
+            'role'=>'admin',
             'email_verified_at' => Carbon::now(),
         ]);
     

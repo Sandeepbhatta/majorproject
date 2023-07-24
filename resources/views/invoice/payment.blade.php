@@ -61,8 +61,8 @@
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.initiatePayment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Invoice</a>
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
                         @if(Auth::guard('admin')->user()->role == "superadmin")
@@ -158,123 +158,52 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-
+            <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
-            <!-- <div class="row g-14"> -->
-            <div class="text-center text-sm-end">
-                <h5 class="modal-title" id="model-title" style="Color:Black">Wallet Payment</h5>
-                           <!-- Table Start -->
-        <div class="container-fluid pt-4 px-4">
-        <div class="row g-14">
-            <div class="text-center text-sm-end">
-                <a href="{{ route('invoice.payment') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2" >Add Payment</a> 
-            </div>
-            <div class="col-sm-12 ">
-                <div class="bg-secondary rounded h-100 p-4">
-                    @if(Session::has('success'))
-                    <div class="alert alert-success">
-                        {{Session::get('success')}}
-                </div>
-                    @endif
-                    <h6 class="mb-4">Payment List</h6>
-                    <table class="table table-hover" id="booking-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Payment Amount</th>
-                                <th scope="col"></th>
-                                <th scope="col">Package</th>
-                                <th scope="col">Booking Type</th>
-                                <th scope="col"></th>
-                                <th scope="col">Action</th>
-                            </tr>
-                            @if( $invoice->isNOtEmpty() )
-                            @foreach( $invoice as $invoice )
-                            <tr>
-                                <td scope="col">{{ $invoice->id }}</td>
-                                <td scope="col">{{ $invoice->email }}</td>
-                                <td scope="col">{{ $invoice->Payment_Amount }}</td>
-                                <td scope="col">{{ $invoice->package }}</td>
-                                <td scope="col">{{ $invoice->booking}}</td>
-                                <td>
-                                    <a href="{{ route('invoice.edit',$invoice->id) }}" class="btn btn-info" >Edit</a>
-                                    <a href="#" onClick="deleteinvoice({{$invoice->id}})" class="btn btn-primary">Delete</a>
-                                    <form id="invoice-edit-action-{{$invoice->id}}" action="{{route('invoice.destroy',$invoice->id)}}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                            
-                            @else
-                            <tr>
-                                <tdcolspan="6">Record Not Found</td>
-                            </tr>
-
+                <div class="row g-14">
+                    <div class="col-sm-12 ">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                {{Session::get('success')}}
+                            </div>
                             @endif
-                        </thead>
-                    </table>
-                <!-- </div> -->
-                <button id="payment-button">Pay with Khalti</button>
+                            <h6 class="mb-4">Payment List</h6>
+                            <table class="table table-hover" id="package-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">OID</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Reference ID</th>
+                                        <th scope="col">User Name</th>
+                                    </tr>
+                                    @isset($invoices)
+                                    @if( $invoices->isNOtEmpty() )
+                                    @foreach( $invoices as $invoice )
+                                    <tr>
+                                        <td scope="col">{{ $loop->iteration }}</td>
+                                        <td scope="col">{{ $invoice->oid }}</td>
+                                        <td scope="col">{{ $invoice->amt }}</td>
+                                        <td scope="col">{{ $invoice->refId }}</td>
+                                        <td scope="col">{{ $invoice->user_name}} </td>
 
-                <script>
-                    var config = {
-                        // Replace the publicKey with yours
-                        "publicKey": "test_public_key_0ad86f4788fb406ca2a80e928a901982",
-                        "productIdentity": "1234567890",
-                        "productName": "Product Name",
-                        "productUrl": "https://example.com/product-url",
-                        "paymentPreference": [
-                            "KHALTI",
-                            "EBANKING",
-                            "MOBILE_BANKING",
-                            "CONNECT_IPS",
-                            "SCT",
-                        ],
-                        "eventHandler": {
-                            onSuccess(payload) {
-                                // Hit merchant API for initiating verification
-                                console.log(payload);
-                            },
-                            onError(error) {
-                                console.log(error);
-                            },
-                            onClose() {
-                                console.log('Widget is closing');
-                            }
-                        }
-                    };
+                                    </tr>
+                                    @endforeach
+                                    
+                                    @else
+                                    <tr>
+                                        <tdcolspan="6">Record Not Found</td>
+                                    </tr>
 
-                    var checkout = new KhaltiCheckout(config);
-                    var btn = document.getElementById("payment-button");
-                    btn.onclick = function () {
-                        // Minimum transaction amount must be 10, i.e 1000 in paisa.
-                        checkout.show({ amount: 1000 });
-                    }
-                </script>
-
-
-
-            <!-- Footer Start -->
-            <!-- <div class="container-fluid pt-3 px-4 mt-3 ">
-                <div class="bg-secondary rounded-top p-4 mt-3">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start ">
-                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            Designed By <a href="#">TEAM YFJ</a>
-                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
+                                    @endif
+                                    @endisset
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div> -->
-            <!--footer End -->
             </div>
-            <!-- Content End -->
 
               <!-- Back to Top -->
               <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

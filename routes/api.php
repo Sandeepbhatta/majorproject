@@ -42,8 +42,13 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 
-Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
-Route::post('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+Route::post('submitdata', [InvoiceController::class, 'submitData']);
+Route::get('submitdata', [InvoiceController::class, 'submitData']);
+// Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+// Route::post('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+// Route::post('/invoice/proceedPayment', [InvoiceController::class, 'proceedPayment'])->name('invoice.proceedPayment');
+// Route::get('/invoice/verifyPayment', [InvoiceController::class, 'verifyPayment'])->name('invoice.verifypayment');
+
 
 
 

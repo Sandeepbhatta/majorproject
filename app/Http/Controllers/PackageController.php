@@ -13,10 +13,10 @@ class PackageController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $packages = Package::orderBy('id', 'asc')->paginate(2);
+            $packages = Package::orderBy('id', 'asc')->paginate(5);
             return response()->json($packages);
         } else {
-            $package = Package::with('category','ratings')->orderBy('id', 'asc')->paginate(2);
+            $package = Package::with('category',)->orderBy('id', 'asc')->paginate(5);
             return view('package.package', ['packages' => $package]);
         }
     }

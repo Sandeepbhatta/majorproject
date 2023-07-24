@@ -95,10 +95,18 @@ Route::delete('/category/{category}',[CategoryController::class, 'destroy'])->na
 // Route::get('/search/{category}', [CategoryController::class, 'search'])->name('category.search');
 
 
-Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
-Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
-Route::post('/invoice/initiate', [InvoiceController::class, 'initiateinvoice']);
-Route::post('/invoice/webhook', [InvoiceController::class, 'khaltiWebhook']);
+// Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+// Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
+// Route::post('/invoice/initiate', [InvoiceController::class, 'initiateinvoice']);
+// Route::post('/invoice/webhook', [InvoiceController::class, 'khaltiWebhook']);
+// Route::get('/invoice', function () {
+    // Retrieve the invoice data (if it exists) and pass it to the view
+//     $invoiceData = session('invoiceData');
+//     return view('invoice.payment', compact('invoiceData',));   
+// })->name('invoice.payment');
+Route::get('/invoice', [InvoiceController::class, 'payment'])->name('invoice.payment');
+
+Route::post('/submitdata', [InvoiceController::class, 'submitData']);
 
 
 

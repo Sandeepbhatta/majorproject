@@ -8,21 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'payment_id',
-        'user_id', 
-        'amount', 
-        'status',
-        'booking_id'
-
+        'oid',
+        'amt',
+        'refId',
+        'user_name', // Add any other fields you want to be mass-assignable here
     ];
-    public function booking()
-    {
-        return $this->belongsTo(Booking::class,'booking_id', 'id');
-    }
-    public function user()
-    {
-        return $this->hasMany(User::class,'user_id', 'id');
-    }
-
 }

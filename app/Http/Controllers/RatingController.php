@@ -18,7 +18,6 @@ class RatingController extends Controller
     public function index(Request $request)
     {
         $packages = Package::all(); 
-        $ratings = Rating::all(); // Fetch all ratings from the database
         // Retrieve all packages from the database
         
         // Calculate the average rating for each package and store it in an associative array
