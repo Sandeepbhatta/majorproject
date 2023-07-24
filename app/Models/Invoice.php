@@ -20,5 +20,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Booking::class,'booking_id', 'id');
     }
+    public function user()
+    {
+        return $this->hasMany(User::class,'user_id', 'id');
+    }
 
 }

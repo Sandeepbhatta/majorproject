@@ -8,6 +8,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ use App\Http\Controllers\PackageController;
 Route::post('/register', [UserController::class, 'NewClient'])->name('register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/package',[PackageController::class, 'index'])->name('package.index');
+Route::get('/category',[CategoryController::class, 'index'])->name('category.index');
 
 Route::group(['middleware' => 'auth:api'], function () {
     

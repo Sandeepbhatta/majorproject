@@ -19,8 +19,6 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('name');
             $table->integer('price');
-            $table->float('discount')->nullable();
-            $table->longText('description');
             $table->string('features')->nullable();
             $table->string('image');
             $table->timestamps();

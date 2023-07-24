@@ -20,9 +20,11 @@ class BookingController extends Controller
     {
         if ($request->wantsJson()) {
             $bookings = Bookings::with('package','user')->orderBy('id', 'asc')->paginate(10);
+
             return response()->json($bookings);
         } else {
             $bookings = Bookings::with('package','user')->orderBy('id', 'asc')->paginate(10);
+
             return view('booking.booking', compact('bookings'));
         }
     }
@@ -76,18 +78,19 @@ class BookingController extends Controller
     public function sendMailNotify($booking,$user_id,$request)
     {
         
-        $user = User::find($user_id); // Retrieve the user by their ID
-    if (!$user) {
-        $request->session()->flash('success', 'User Not found!');
-        return redirect()->route('booking.index');
-    }
-        $email = $user->email; // Retrieve the email from the user record
+        $user = User::find($user_id);
+        if (!$user) {
+            $request->session()->flash('error', 'User Not found!');
+            return redirect()->route('booking.index');
+        }
+        
+        $email = $user->email;  // Retrieve the email from the user record
 
         $data = [
             'title' => "Welcome to Your Function Junction",
             'subject' => "Booking Confirmation",
             'body' => "Thank you for booking with us. We are glad that we have been able to cherish your remarkable moment.",
-            'user' => null, // Set user data to null since we are not using the logged-in user
+            'user' => $user, // Set user data to null since we are not using the logged-in user
             'booking' => $booking, // Pass the booking data to the email template
         ];
 

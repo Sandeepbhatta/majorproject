@@ -32,7 +32,6 @@ class PackageController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'price' => ['required'],
-            'description' => 'required',
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -40,8 +39,6 @@ class PackageController extends Controller
             $package = new Package();
             $package->name = $request->name;
             $package->price = $request->price;
-            $package->discount = $request->discount;
-            $package->description = $request->description;
             if ($request->has('category_id')) {
                 $package->category_id = $request->category_id;
             }
@@ -91,8 +88,6 @@ class PackageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'price' => ['required'],
-            'description' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -100,8 +95,7 @@ class PackageController extends Controller
             $package = Package::find($id);
             $package->name = $request->name;
             $package->price = $request->price;
-            $package->discount = $request->discount;
-            $package->description = $request->description;
+
             $package->save();
 
             if ($request->image) {
@@ -140,17 +134,5 @@ class PackageController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-
-        $results = Package::where('name', 'like', '%' . $query . '%')->get();
-
-        if ($request->wantsJson()) {
-            return response()->json($results);
-        } else {
-            return view('search.results', ['results' => $results]);
-        }
-    }
     
 }

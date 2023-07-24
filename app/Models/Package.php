@@ -11,10 +11,7 @@ class Package extends Model
     protected $fillable = [
         'name',
         'price',
-        'discount',
-        'description',
         'category_id',
-        'features',
         'image'
 
         
@@ -24,8 +21,12 @@ class Package extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'Booking_id', 'id');
+    }
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'package_id', 'id');
+        return $this->hasMany(Rating::class, 'rating_id', 'id');
     }
 }

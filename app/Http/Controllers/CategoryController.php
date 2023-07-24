@@ -29,7 +29,6 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'description' => 'required',
-            'features' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -37,7 +36,6 @@ class CategoryController extends Controller
             $category = new Category();
             $category->name = $request->name;
             $category->description = $request->description;
-            $category->features = implode(', ', $request->features);
 
             // Handle the image upload
             if ($request->hasFile('image')) {
@@ -82,7 +80,6 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'description' => 'required',
-            'features' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -90,7 +87,6 @@ class CategoryController extends Controller
             $category = Category::find($id);
             $category->name = $request->name;
             $category->description = $request->description;
-            $category->features = implode(', ', $request->features);
             $category->save();
 
             if ($request->hasFile('image')) {
@@ -128,16 +124,4 @@ class CategoryController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-
-        $results = Category::where('name', 'like', '%' . $query . '%')->get();
-
-        if ($request->wantsJson()) {
-            return response()->json($results);
-        } else {
-            return view('search.results', ['results' => $results]);
-        }
-    }
 }

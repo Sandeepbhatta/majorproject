@@ -55,7 +55,7 @@
                             <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">{{Auth::guard('api')->user()->name}}</h6>
+                            <h6 class="mb-0">{{Auth::guard('admin')->user()->name}}</h6>
                             <!-- <span>SuperAdmin Name : user()->name</span> -->
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
-                        @if(Auth::guard('api')->user()->role == "superadmin")
+                        @if(Auth::guard('admin')->user()->role == "superadmin")
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Create</a>
                             <div class="dropdown-menu bg-transparent border-0">
@@ -106,7 +106,7 @@
                                 <div class="d-flex align-items-center">
                                     <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
                                     <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">{{Auth::guard('api')->user()->name}}</h6>
+                                        <h6 class="fw-normal mb-0">{{Auth::guard('admin')->user()->name}}</h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">{{Auth::guard('api')->user()->name}}</span>
+                            <span class="d-none d-lg-inline-flex">{{Auth::guard('admin')->user()->name}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="{{route('admin.logout')}}" class="dropdown-item">Log Out</a>
@@ -167,7 +167,7 @@
                                     <th scope="col">Start Date</th>
                                     <th scope="col">End Date</th>
                                     <th scope="col">Package Name</th>
-                                    <th scope="col">Package Name</th>
+                                    <th scope="col">Email</th>
                                     <th scope="col">Contact Number</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -178,9 +178,19 @@
                                             <td scope="col">{{ $booking->booking_date }}</td>
                                             <td scope="col">{{ $booking->start_date }}</td>
                                             <td scope="col">{{ $booking->end_date }}</td>
-                                            <td scope="col">{{ $booking->package->name }}</td>
-                                            <td scope="col">{{ $booking->user->mobile }}</td>
-                                            <td scope="col">{{ $booking->user->email }}</td>
+                                            @if($booking->package) <!-- Check if the package relationship exists -->
+                                                <td scope="col">{{ $booking->package->name }}</td>
+                                            @else
+                                                <td scope="col">Package not available</td>
+                                            @endif
+
+                                            @if($booking->user) <!-- Check if the user relationship exists -->
+                                                <td scope="col">{{ $booking->user->email }}</td>
+                                                <td scope="col">{{ $booking->user->mobile }}</td>
+                                            @else
+                                                <td scope="col">User not available</td>
+                                                <td scope="col">N/A</td>
+                                            @endif
                                             <td>
                                                 <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
                                                 <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>

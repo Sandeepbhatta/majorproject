@@ -61,9 +61,9 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.initiatePayment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
@@ -167,9 +167,6 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
-                                        <th scope="col">Discount</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Features</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Action</th>
@@ -180,9 +177,6 @@
                                         <td scope="col">{{ $package->id }}</td>
                                         <td scope="col">{{ $package->name }}</td>
                                         <td scope="col">{{ $package->price }}</td>
-                                        <td scope="col">{{ $package->discount }}</td>
-                                        <td scope="col">{{ $package->description }}</td>
-                                        <td scope="col">{{ $package->features}}</td>
                                         <td scope="col">{{ $package->category->name}}</td>
                                         <td scope="col">{{ $package->image}} </td>
                                         <td>

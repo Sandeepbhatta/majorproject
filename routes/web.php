@@ -128,6 +128,7 @@ Route::middleware('admin')->post('/ratings', [RatingController::class, 'store'])
 
 
 
+
 /*---------------rating route ends--------------*/
 
 
