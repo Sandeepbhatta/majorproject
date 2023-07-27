@@ -13,6 +13,6 @@ class Invoice extends Model
         'oid',
         'amt',
         'refId',
-        'user_name', // Add any other fields you want to be mass-assignable here
+        'user_id', // Add any other fields you want to be mass-assignable here
     ];
 }

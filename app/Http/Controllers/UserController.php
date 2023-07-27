@@ -29,14 +29,14 @@ class UserController extends Controller
     }
     public function index()
     {
-        $data['users'] = User::orderBy('id', 'asc')->paginate(5);
+        $data['users'] = User::orderBy('id', 'asc')->paginate(10);
 
         return view('user.user', $data);
     }
     public function userdashboard()
     {
         return $user = Auth::user();
-        $data['users'] = User::orderBy('id', 'asc')->paginate(5);
+        $data['users'] = User::orderBy('id', 'asc')->paginate(10);
 
         return view('user.user', $data);
     }

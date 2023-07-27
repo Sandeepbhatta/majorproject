@@ -13,7 +13,7 @@ class CreateInvoicesTable extends Migration
             $table->string('oid');
             $table->decimal('amt', 10, 2);
             $table->string('refId');
-            $table->string('user_name');
+            $table->integer('user_id');
             // Add any other fields as needed
             $table->timestamps();
         });

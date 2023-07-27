@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\Category;
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use DB;
 use Illuminate\Support\Facades\Validator;
 
 class PackageController extends Controller
@@ -120,7 +121,11 @@ class PackageController extends Controller
             }
         }
     }
-    
+    public function getallpackage(){
+        return $packages =  Package::withCount(['ratings as sum_of_average_ratings' => function ($query) {
+            $query->select(DB::raw('SUM(rating)'));
+        }])->get();
+    }
 
     public function destroy(Request $request, $id)
     {

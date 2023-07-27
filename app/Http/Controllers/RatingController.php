@@ -46,7 +46,7 @@ class RatingController extends Controller
             'package_id' => 'required|exists:packages,id',
         ]);
         
-        $user_id = Auth::guard('admin')->user()->id;
+        $user_id = Auth::guard('api')->user()->id;
         $packageId = $request->input('package_id');
         
     

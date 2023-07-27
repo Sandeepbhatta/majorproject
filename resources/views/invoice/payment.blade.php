@@ -176,7 +176,7 @@
                                         <th scope="col">OID</th>
                                         <th scope="col">Amount</th>
                                         <th scope="col">Reference ID</th>
-                                        <th scope="col">User Name</th>
+                                        <th scope="col">Email</th>
                                     </tr>
                                     @isset($invoices)
                                     @if( $invoices->isNOtEmpty() )
@@ -186,7 +186,7 @@
                                         <td scope="col">{{ $invoice->oid }}</td>
                                         <td scope="col">{{ $invoice->amt }}</td>
                                         <td scope="col">{{ $invoice->refId }}</td>
-                                        <td scope="col">{{ $invoice->user_name}} </td>
+                                        <td scope="col">{{ $invoice->email}} </td>
 
                                     </tr>
                                     @endforeach

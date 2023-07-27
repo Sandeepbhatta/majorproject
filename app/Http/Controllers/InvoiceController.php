@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Invoice;
+use App\Models\User;
 
 class InvoiceController extends Controller
 {
@@ -24,8 +25,8 @@ class InvoiceController extends Controller
         }
 
         // Get the authenticated user's name
-        $userName = Auth::user()->name;
-
+        // Auth::guard('api')->user()->name;
+        // return Auth::user();
         // Create a new invoice record in the database
         Invoice::create([
             'oid' => $request->oid,
@@ -63,27 +64,51 @@ class InvoiceController extends Controller
         }
 
         // Get the authenticated user's name
-        $userName = Auth::user()->name;
+        $userId = User::where('email', $request->email)->first()->id;
+        // Auth::guard('api')->user()->name;
 
-        // Create a new invoice record in the database
-        Invoice::create([
+        // $userName = Auth::user()->name;
+
+        $url = "https://uat.esewa.com.np/epay/transrec";
+        $data = [
+            'amt' => $request->amt,
+            'rid' => $request->refId,
+            'pid' => $request->oid,
+            'scd' => 'EPAYTEST',
+        ];
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $xml = simplexml_load_string($response);
+
+        // Extract the value of the <response_code> element
+        $responseCode = $xml->response_code;
+        // return $responseCode;
+        if($responseCode == 'failure'){
+            return response()->json(['message' => 'Payment Failed'], 400);
+        }
+
+        // Save data to the database
+        $invoice = Invoice::create([
             'oid' => $request->oid,
             'amt' => $request->amt,
             'refId' => $request->refId,
-            'user_name' => $userName, // Associate the authenticated user's name with the invoice
+            'user_id' => $userId,
             // Add any other fields as needed
         ]);
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Data submitted successfully'], 200);
-        } else {
-            return redirect()->route('payment')->with('success', 'Data submitted successfully');
-        }        
-        // Return a JSON response indicating the success of the data submission
-    }
-}
+        // return $invoice;
 
-// react ma 
-// 1. start re end wala form hunxa
-// 2 fill up garera button click garda bookingExists api ma janxa
-// 3 response ma available aayo vane matra proceedPayment api ma janxa
-// 4. esewa bata pay vaisakexi verifyPayment api ma redirect gardinxa 
+        return response()->json([
+            'message' => 'Payment Successful',
+            'data' => $invoice, // save it to local storage
+        ], 200);
+        
+        
+    }
+}  
+    
+

@@ -27,6 +27,6 @@ class Package extends Model
     }
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'rating_id', 'id');
+        return $this->hasMany(Rating::class, 'package_id', 'id');
     }
 }

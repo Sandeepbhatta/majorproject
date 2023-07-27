@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Session;
+
 use Auth;
 
 
@@ -42,64 +45,75 @@ class BookingController extends Controller
         $user_id = Auth::guard('api')->user()->id;
         $validator = Validator::make($request->all(), [
             'booking_date' => ['required', 'date'],
-            'start_date' => 'required',
+            'start_date' => ['required', 'date'],
             'end_date' => 'required',
             'package_id' => 'required|exists:packages,id', // Validate package_id and ensure it exists in the packages table
 
         ]);
         
         if ($validator->passes()) {
+            $bookingDate = $request->start_date;
+            $existingBooking = Bookings::where('start_date', $bookingDate)->first();
 
-            $booking = new Bookings();
-            $booking->booking_date = $request->booking_date;
-            $booking->start_date = $request->start_date;
-            $booking->end_date = $request->end_date;
-            $booking->package_id = $request->package_id;
-            $booking->user_id =  $user_id; // Add the logged-in user's ID
-            $booking->save();
-
-            $this->sendMailNotify($booking, $user_id, $request);
-
-            return response()->json(['message' => 'Booking added successfully']);
-            if ($request->wantsJson()) {
+            if ($existingBooking) {
+                // Date already booked, store it in the session to highlight in the frontend
+                Session::put('blocked_date', $bookingDate);
+                return response()->json(['message' => 'This date is blocked.'], 422);
             } else {
-                $request->session()->flash('success', 'Booking Added Successfully!');
-                return redirect()->route('booking.index');
-            }
-        } else {
-            return response()->json(['errors' => $validator->errors()], 422);
-            if ($request->wantsJson()) {
-            } else {
-                return redirect()->route('booking.create')->withErrors($validator)->withInput();
+                // Date is available for booking
+                $booking = new Bookings();
+                $booking->booking_date = $request->booking_date;
+                $booking->start_date = $request->start_date;
+                $booking->end_date = $request->end_date;
+                $booking->package_id = $request->package_id;
+                $booking->user_id = $user_id; // Add the logged-in user's ID
+                $booking->save();
+
+                return response()->json(['message' => 'Booking created successfully.']);
+                $startDate = Carbon::parse($request->start_date)->toDateString();
+                $calendarDate = Carbon::parse($bookingDate)->toDateString();
+                if ($startDate === $calendarDate) {
+                    // Clear the session since the selected start_date matches the calendar's date
+                    Session::forget('blocked_date');
+                }
             }
         }
+
+        return response()->json(['errors' => $validator->errors()], 422);
     }
 
-    public function sendMailNotify($booking,$user_id,$request)
+    public function getBlockedDate()
     {
-        
-        $user = User::find($user_id);
-        if (!$user) {
-            $request->session()->flash('error', 'User Not found!');
-            return redirect()->route('booking.index');
-        }
-        
-        $email = $user->email;  // Retrieve the email from the user record
-
-        $data = [
-            'title' => "Welcome to Your Function Junction",
-            'subject' => "Booking Confirmation",
-            'body' => "Thank you for booking with us. We are glad that we have been able to cherish your remarkable moment.",
-            'user' => $user, // Set user data to null since we are not using the logged-in user
-            'booking' => $booking, // Pass the booking data to the email template
-        ];
-
-        try {
-            Mail::to($user->email)->send(new MailNotify($data));
-        } catch (Exception $th) {
-            // Handle the exception
-        }
+        $blockedDate = Session::get('blocked_date');
+        return response()->json(['blocked_date' => $blockedDate]);
     }
+
+
+    // public function sendMailNotify($booking,$user_id,$request)
+    // {
+        
+    //     $user = User::find($user_id);
+    //     if (!$user) {
+    //         $request->session()->flash('error', 'User Not found!');
+    //         return redirect()->route('booking.index');
+    //     }
+        
+    //     $email = $user->email;  // Retrieve the email from the user record
+
+    //     $data = [
+    //         'title' => "Welcome to Your Function Junction",
+    //         'subject' => "Booking Confirmation",
+    //         'body' => "Thank you for booking with us. We are glad that we have been able to cherish your remarkable moment.",
+    //         'user' => $user, // Set user data to null since we are not using the logged-in user
+    //         'booking' => $booking, // Pass the booking data to the email template
+    //     ];
+
+    //     try {
+    //         Mail::to($user->email)->send(new MailNotify($data));
+    //     } catch (Exception $th) {
+    //         // Handle the exception
+    //     }
+    // }
 
 
     // ...

@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
@@ -33,12 +34,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');  
     Route::post('/createbooking',[BookingController::class, 'store'])->name('booking');
+    Route::get('/get-blocked-date', 'App\Http\Controllers\BookingController@getBlockedDate');
+
     
-    
+    Route::get('/package',[PackageController::class, 'getallpackage'])->name('package.get');
     Route::post('/package',[PackageController::class, 'store'])->name('package.store');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+    
     Route::get('/userdashboard', [UserController::class, 'userdashboard'])->name('userdashboard');
-    Route::get('/ratings', [UserController::class, 'ratings'])->name('ratings');
+    Route::get('/ratings', [UserController::class, 'index'])->name('ratings');
+    Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
 });
 
 
