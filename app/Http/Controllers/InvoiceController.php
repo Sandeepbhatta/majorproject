@@ -27,8 +27,8 @@ class InvoiceController extends Controller
         // Get the authenticated user's name
         // Auth::guard('api')->user()->name;
         // return Auth::user();
-        $user = Auth::guard('api')->user()->name;
-        $userId = $user->id;  
+        $user = Auth::guard('api')->user();
+$userId = $user->id;
         // Create a new invoice record in the database
         Invoice::create([
             'oid' => $request->oid,
@@ -71,8 +71,8 @@ class InvoiceController extends Controller
         }
     
         // Get the authenticated user
-        $user = Auth::guard('api')->user()->name;
-        $userId = $user->id;
+        $user = Auth::guard('api')->user();
+$userId = $user->id;
         // $userEmail = $user->email; // Retrieve the user's email
 
 

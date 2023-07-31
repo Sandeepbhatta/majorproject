@@ -19,6 +19,8 @@ class Bookings extends Model
         'start_date',
         'end_date',
     ];
+    // protected $cancellationCutoffDate = ['booking_date'];
+
     public function package()
     {
         return $this->belongsTo(Package::class, 'package_id', 'id');

@@ -198,7 +198,18 @@
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
+
                                             </td>
+                                            <td>
+        @if ($booking->status === 0) <!-- Check if the booking is not already canceled -->
+            <a href="{{ route('booking.cancel', $booking->id) }}" class="btn btn-danger" onclick="event.preventDefault(); if (confirm('Are you sure you want to cancel this booking?')) { document.getElementById('cancel-form-{{ $booking->id }}').submit(); }">Cancel</a>
+            <form id="cancel-form-{{ $booking->id }}" action="{{ route('booking.cancel', $booking->id) }}" method="post" style="display: none;">
+                @csrf
+            </form>
+        @else
+            <span class="text-danger"> Canceled</span>
+        @endif
+    </td>
                                         </tr>
                                     @endforeach
                                 @else

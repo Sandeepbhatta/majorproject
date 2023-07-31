@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
-use App\Models\Bookings;
+use App\Models\Bookings; 
+use App\Models\Refund;
 use App\Models\Package;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\RefundController;
+
 
 use Auth;
 
@@ -157,6 +160,33 @@ class BookingController extends Controller
             } else {
                 return redirect()->route('booking.edit', $id)->withErrors($validator)->withInput();
             }
+        }
+    }
+    public function cancelBooking(Request $request, $id)
+    {
+        $booking = Bookings::find($id);
+
+        if (!$booking) {
+            return back()->with('error', 'Booking not found.');
+        }
+
+        // Check if the booking status is already canceled
+        if ($booking->status === 1) {
+            return back()->with('error', 'Booking is already canceled.');
+        }
+        // Create an instance of RefundController
+        $refundController = new RefundController();
+        $refundStatus = $refundController->initiateRefund($booking);
+
+        if ($refundStatus) {
+            // If refund initiation is successful, update the booking status to 1 (canceled)
+            $booking->status = 1;
+            $booking->save();
+
+            return back()->with('success', 'Booking canceled successfully. Refund initiated.');
+        } else {
+            // Refund initiation failed
+            return back()->with('error', 'Failed to initiate refund. Please try again later.');
         }
     }
 

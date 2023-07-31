@@ -62,10 +62,10 @@
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('customizePackages.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-3"></i>Custom Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                        <a href="{{route('refunds.displayRefunds')}}" class="nav-item nav-link active "><i class="fa fa-table me-2"></i>Refund</a>
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
@@ -150,10 +150,6 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                    <!-- <div class="text-center text-sm-end">
-                    <a href="{{route('package.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3 ">Add Package</a> 
-
-                    </div> -->
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -161,105 +157,31 @@
                                 {{Session::get('success')}}
                             </div>
                             @endif
-                            <h6 class="mb-4">Customize Package List</h6>
-                            <table class="table table-hover" id="package-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    @if( $customizePackages->isNOtEmpty() )
-                                    @foreach( $customizePackages as $customizePackage )
-                                    <tr>
-                                        <td>{{ $customizePackage->id }}</td>
-                                        <td>{{ $customizePackage->name }}</td>
-                                        <td>{{ $customizePackage->description }}</td>
-                                        <td>
-                                        @php
-                                            $images = json_decode($customizePackage->images);
-                                        @endphp
-
-                                        @if (count($images) > 0)
-                                            @foreach ($images as $imageName)
-                                                <img src="{{ asset('images/' . $imageName) }}" style="width: 100px; height: auto;" onclick="showImageModal('{{ asset('images/' . $imageName) }}')">
-                                            @endforeach
-                                        @else
-                                            <img src="{{ asset('path/to/placeholder_image.png') }}" style="width: 100px; height: auto;">
-                                        @endif
-                                    </td>
-                                        
-                                        <td>
-                                        <a href="#" onClick="deleteCustomizePackage({{$customizePackage->id}})" class="btn btn-primary">Delete</a>
-                                        <form id="customizePackage-edit-action-{{$customizePackage->id}}" action="{{ route('customizePackages.destroy', $customizePackage->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>                            <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    
-                                    @else
-                                    <tr>
-                                        <tdcolspan="6">Record Not Found</td>
-                                    </tr>
-
-                                    @endif
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="mt-3">
-                            {{ $customizePackages->links() }}
+                            <h6 class="mb-4">Refund List</h6>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th> ID</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($refunds as $refund)
+                                            <tr>
+                                                <td>{{ $refund->id }}</td>
+                                                <td>{{ $refund->amount }}</td>
+                                                <td>{{ $refund->status }}</td>
+                                                <td>{{ $refund->created_at }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Image Modal -->
-<!-- Image Modal -->
-<div id="imageModal" class="modal">
-            <span class="close" onclick="closeImageModal()">&times;</span>
-            <img class="modal-content" id="modalImage">
-        </div>
-
-        <style>
-            /* Modal styles (add these styles in the head section or link a separate CSS file) */
-            .modal {
-                display: none; /* Hide the modal by default */
-                position: fixed;
-                z-index: 1;
-                padding-top: 100px;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.7);
-            }
-
-            .modal-content {
-                margin: auto;
-                display: block;
-                width: 80%;
-                max-width: 800px;
-                height: auto;
-            }
-
-            .close {
-                color: #fff;
-                position: absolute;
-                top: 15px;
-                right: 35px;
-                font-size: 40px;
-                font-weight: bold;
-                cursor: pointer;
-            }
-        </style>
-
-
-<!-- Rest of your Blade view content -->
-
             <!-- Table End -->
             <!-- Footer Start -->
             <!-- <div class="container-fluid pt-4 px-4 mt-4">
@@ -298,25 +220,3 @@
 
 </html>
 
-<!-- JavaScript to handle the modal -->
-<script>
-    function showImageModal(imageSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-
-        modalImage.src = imageSrc;
-        modal.style.display = 'block';
-    }
-
-    function closeImageModal() {
-        const modal = document.getElementById('imageModal');
-        modal.style.display = 'none';
-    }
-</script>
-<script>
-    function deleteCustomizePackage(id) {
-        if (confirm("Are you sure you want to delete?")) {
-            document.getElementById('customizePackage-edit-action-' + id).submit();
-        }
-    }
-</script>

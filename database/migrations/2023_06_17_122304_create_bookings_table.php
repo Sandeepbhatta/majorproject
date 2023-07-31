@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('booking_date');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->unsignedTinyInteger('status')->default(0); // Add the 'status' field with a default value of zero
             $table->timestamps();
         });
     }

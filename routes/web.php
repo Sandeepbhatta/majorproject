@@ -14,6 +14,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CustomizePackageController;
+use App\Http\Controllers\RefundController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\Admin;
@@ -84,6 +85,11 @@ Route::post('/booking',[BookingController::class, 'store'])->name('booking.store
 Route::get('/booking/{booking}/edit',[BookingController::class, 'edit'])->name('booking.edit');
 Route::put('/booking/{booking}',[BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/{booking}',[BookingController::class, 'destroy'])->name('booking.destroy');
+// Route::post('/cancel-booking/{id}', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
+Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
+Route::post('refund/{booking_id}', 'RefundController@initiateRefund')->name('refund.initiate');
+
+
 
 
 //package route
@@ -137,6 +143,9 @@ Route::middleware('admin')->post('/ratings', [RatingController::class, 'store'])
 Route::get('/customizepackages', [CustomizePackageController::class, 'index'])->name('customizePackages.index');
 Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
 Route::delete('/customizepackages',[PackageController::class, 'destroy'])->name('customizePackages.destroy');
+
+Route::get('/refunds', [RefundController::class, 'displayRefunds'])->name('refunds.displayRefunds');
+
 
 
 

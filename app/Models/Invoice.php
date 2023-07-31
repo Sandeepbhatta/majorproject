@@ -15,4 +15,8 @@ class Invoice extends Model
         'refId',
         'user_id', // Add any other fields you want to be mass-assignable here
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

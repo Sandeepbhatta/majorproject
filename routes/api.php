@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomizePackageController;
+use App\Http\Controllers\RefundController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/booking',[BookingController::class, 'index'])->name('booking.index');  
     Route::post('/createbooking',[BookingController::class, 'store'])->name('booking');
     Route::get('/get-blocked-date', 'App\Http\Controllers\BookingController@getBlockedDate');
+    Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
+    Route::post('refund/{booking_id}', 'RefundController@initiateRefund')->name('refund.initiate');
+    Route::get('/refunds', [RefundController::class, 'displayRefunds'])->name('refunds.displayRefunds');
+
+
 
     
     Route::get('/package',[PackageController::class, 'getallpackage'])->name('package.get');
@@ -47,10 +53,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
     Route::post('submitdata', [InvoiceController::class, 'submitData']);
     Route::get('submitdata', [InvoiceController::class, 'submitData']);
+    Route::get('/customizepackages', [CustomizePackageController::class, 'index']);
+    Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
 });
 
-Route::get('/customizepackages', [CustomizePackageController::class, 'index']);
-Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
+// Route::post('refund/{booking_id}', 'RefundController@initiateRefund')->name('refund.initiate');
+
 
 
 // Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
