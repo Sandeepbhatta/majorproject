@@ -30,3 +30,4 @@ class Package extends Model
         return $this->hasMany(Rating::class, 'package_id', 'id');
     }
 }
+

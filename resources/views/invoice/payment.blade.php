@@ -186,7 +186,7 @@
                                         <td scope="col">{{ $invoice->oid }}</td>
                                         <td scope="col">{{ $invoice->amt }}</td>
                                         <td scope="col">{{ $invoice->refId }}</td>
-                                        <td scope="col">{{ $invoice->email}} </td>
+                                        <td scope="col">"crischal1234@gmail.com" </td>
 
                                     </tr>
                                     @endforeach

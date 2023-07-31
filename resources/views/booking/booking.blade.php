@@ -153,7 +153,7 @@
             @endphp
                 <div class="row g-14">
                     <div class="text-center text-sm-end">
-                        <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a>
+                        <!-- <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a> -->
                     </div>
                     <div class="col-sm-12">
                         <div class="bg-secondary rounded h-100 p-4">

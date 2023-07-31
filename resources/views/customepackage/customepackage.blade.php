@@ -61,7 +61,8 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('package.index')}}" class="nav-item nav-link "><i class="fa fa-keyboard me-2"></i>Package</a>
+                        <a href="{{route('customizePackages.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-3"></i>Customize Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
@@ -149,10 +150,10 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
-                    <div class="text-center text-sm-end">
+                    <!-- <div class="text-center text-sm-end">
                     <a href="{{route('package.create')}}" class="btn btn-info py-3 w-5 mb-2 col-xl-3 ">Add Package</a> 
 
-                    </div>
+                    </div> -->
                     <div class="col-sm-12 ">
                         <div class="bg-secondary rounded h-100 p-4">
                             @if(Session::has('success'))
@@ -160,33 +161,42 @@
                                 {{Session::get('success')}}
                             </div>
                             @endif
-                            <h6 class="mb-4">Package List</h6>
+                            <h6 class="mb-4">Customize Package List</h6>
                             <table class="table table-hover" id="package-table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Category</th>
+                                        <th scope="col">Description</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Action</th>
                                     </tr>
-                                    @if( $packages->isNOtEmpty() )
-                                    @foreach( $packages as $package )
+                                    @if( $customizePackages->isNOtEmpty() )
+                                    @foreach( $customizePackages as $customizePackage )
                                     <tr>
-                                        <td scope="col">{{ $package->id }}</td>
-                                        <td scope="col">{{ $package->name }}</td>
-                                        <td scope="col">{{ $package->price }}</td>
-                                        <td scope="col">{{ $package->category ? $package->category->name : 'N/A' }}</td>
-                                        <td scope="col">{{ $package->image}} </td>
+                                        <td>{{ $customizePackage->id }}</td>
+                                        <td>{{ $customizePackage->name }}</td>
+                                        <td>{{ $customizePackage->description }}</td>
                                         <td>
-                                            <a href="{{ route('package.edit',$package->id) }}" class="btn btn-info" >Edit</a>
-                                            <a href="#" onClick="deletepackage({{$package->id}})" class="btn btn-primary">Delete</a>
-                                            <form id="package-edit-action-{{$package->id}}" action="{{route('package.destroy',$package->id)}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
-                                            </form>
+                                        @php
+                                            $images = json_decode($customizePackage->images);
+                                        @endphp
+
+                                        @if (count($images) > 0)
+                                            @foreach ($images as $imageName)
+                                                <img src="{{ asset('images/' . $imageName) }}" style="width: 100px; height: auto;" onclick="showImageModal('{{ asset('images/' . $imageName) }}')">
+                                            @endforeach
+                                        @else
+                                            <img src="{{ asset('path/to/placeholder_image.png') }}" style="width: 100px; height: auto;">
+                                        @endif
+                                    </td>
+                                        
+                                        <td>
+                                        <a href="#" onClick="deleteCustomizePackage({{$customizePackage->id}})" class="btn btn-primary">Delete</a>
+                                        <form id="customizePackage-edit-action-{{$customizePackage->id}}" action="{{ route('customizePackages.destroy', $customizePackage->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>                            <!-- <a class="btn btn-danger"  type="submit">Delete</a> -->
                                         </td>
                                     </tr>
                                     @endforeach
@@ -201,11 +211,55 @@
                             </table>
                         </div>
                         <div class="mt-3">
-                            {{ $packages->links() }}
+                            {{ $customizePackages->links() }}
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Image Modal -->
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+            <span class="close" onclick="closeImageModal()">&times;</span>
+            <img class="modal-content" id="modalImage">
+        </div>
+
+        <style>
+            /* Modal styles (add these styles in the head section or link a separate CSS file) */
+            .modal {
+                display: none; /* Hide the modal by default */
+                position: fixed;
+                z-index: 1;
+                padding-top: 100px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            .modal-content {
+                margin: auto;
+                display: block;
+                width: 80%;
+                max-width: 800px;
+                height: auto;
+            }
+
+            .close {
+                color: #fff;
+                position: absolute;
+                top: 15px;
+                right: 35px;
+                font-size: 40px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        </style>
+
+
+<!-- Rest of your Blade view content -->
+
             <!-- Table End -->
             <!-- Footer Start -->
             <!-- <div class="container-fluid pt-4 px-4 mt-4">
@@ -243,10 +297,26 @@
 </body>
 
 </html>
+
+<!-- JavaScript to handle the modal -->
 <script>
-    function deletepackage(id){
-        if(confirm("Are you sure you want to delete?")){
-           document.getElementById('package-edit-action-' + id).submit(); 
+    function showImageModal(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        modalImage.src = imageSrc;
+        modal.style.display = 'block';
+    }
+
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+    }
+</script>
+<script>
+    function deleteCustomizePackage(id) {
+        if (confirm("Are you sure you want to delete?")) {
+            document.getElementById('customizePackage-edit-action-' + id).submit();
         }
     }
 </script>

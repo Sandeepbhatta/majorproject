@@ -208,7 +208,6 @@
                                         @endforeach
                                     </select>
                                     </div>
-
                                     <div>
                                         <label for="image" class="form-label">Upload Image:</label>
                                         <input type="file" name="image" class="@error('image') is-invalid @enderror">    

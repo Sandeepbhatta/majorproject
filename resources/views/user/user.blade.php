@@ -135,7 +135,7 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Contact Number</th>
-                                        <th scope="col">Role</th>
+                                        <!-- <th scope="col">Role</th> -->
                                         <!-- <th scope="col">Action</th> -->
                                     </tr>
                                     @if( $users->isNOtEmpty() )
@@ -145,7 +145,7 @@
                                         <td scope="col">{{ $user->name }}</td>
                                         <td scope="col">{{ $user->email }}</td>
                                         <td scope="col">{{ $user->mobile }}</td>
-                                        <td scope="col">{{ $user->role}}</td>
+                                        <!-- <td scope="col">{{ $user->role}}</td> -->
                                         <!-- <td>
                                             <a href="" class="btn btn-info" >Edit</a>
                                                 <a href="#" onClick="deleteUser({{$user->id}})" class="btn btn-primary">Delete</a>

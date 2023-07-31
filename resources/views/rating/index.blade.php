@@ -82,7 +82,7 @@
                     <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
-
+<!-- 
                     <form action="{{ route('ratings.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -115,7 +115,7 @@
                         </div>
 
                         <button type="submit">Submit Rating</button>
-                    </form>
+                    </form> -->
                     <!-- Display Average Ratings for each Package -->
                     @foreach ($packages as $package)
                             <div>

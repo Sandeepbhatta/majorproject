@@ -17,8 +17,8 @@ class PackageController extends Controller
             $packages = Package::orderBy('id', 'asc')->paginate(5);
             return response()->json($packages);
         } else {
-            $package = Package::with('category',)->orderBy('id', 'asc')->paginate(5);
-            return view('package.package', ['packages' => $package]);
+            $packages = Package::with('category')->orderBy('id', 'asc')->paginate(5);
+            return view('package.package', ['packages' => $packages]);
         }
     }
 

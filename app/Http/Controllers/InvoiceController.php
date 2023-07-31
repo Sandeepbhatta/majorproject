@@ -27,12 +27,16 @@ class InvoiceController extends Controller
         // Get the authenticated user's name
         // Auth::guard('api')->user()->name;
         // return Auth::user();
+        $user = Auth::guard('api')->user()->name;
+        $userId = $user->id;  
         // Create a new invoice record in the database
         Invoice::create([
             'oid' => $request->oid,
             'amt' => $request->amt,
             'refId' => $request->refId,
-            'user_name' => $userName, // Associate the authenticated user's name with the invoice
+            'user_id' => $userId, // Pass the user_id obtained from the authenticated user
+
+            // 'user_name' => $userName, // Associate the authenticated user's name with the invoice
             // Add any other fields as needed
         ]);
 
@@ -53,18 +57,27 @@ class InvoiceController extends Controller
     public function submitData(Request $request)
     {
         // Validate the incoming request data
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
         $validator = Validator::make($request->all(), [
             'oid' => 'required|string',
             'amt' => 'required|numeric',
             'refId' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+    
+        // Get the authenticated user
+        $user = Auth::guard('api')->user()->name;
+        $userId = $user->id;
+        // $userEmail = $user->email; // Retrieve the user's email
+
 
         // Get the authenticated user's name
-        $userId = User::where('email', $request->email)->first()->id;
+        // $userId = User::where('email', $request->email)->first()->id;
         // Auth::guard('api')->user()->name;
 
         // $userName = Auth::user()->name;
@@ -97,14 +110,18 @@ class InvoiceController extends Controller
             'oid' => $request->oid,
             'amt' => $request->amt,
             'refId' => $request->refId,
-            'user_id' => $userId,
+            'user_id' => $userId, // Pass the user_id obtained from the authenticated user
+
+            // 'user_id' => $userId,
             // Add any other fields as needed
         ]);
         // return $invoice;
 
         return response()->json([
             'message' => 'Payment Successful',
-            'data' => $invoice, // save it to local storage
+            'data' => $invoice, 
+            'user_id' => $userId, // Send the user's ID in the response
+            // save it to local storage
         ], 200);
         
         

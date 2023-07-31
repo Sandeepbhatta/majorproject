@@ -13,6 +13,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\CustomizePackageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\Admin;
@@ -133,6 +134,10 @@ Route::delete('/package/{package}',[PackageController::class, 'destroy'])->name(
 /*---------------rating route --------------*/
 Route::get('/ratings', [RatingController::class, 'index'])->name('ratings.index');
 Route::middleware('admin')->post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+Route::get('/customizepackages', [CustomizePackageController::class, 'index'])->name('customizePackages.index');
+Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
+Route::delete('/customizepackages',[PackageController::class, 'destroy'])->name('customizePackages.destroy');
+
 
 
 

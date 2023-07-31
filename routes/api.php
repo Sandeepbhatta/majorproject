@@ -10,6 +10,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomizePackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,11 +45,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/userdashboard', [UserController::class, 'userdashboard'])->name('userdashboard');
     Route::get('/ratings', [UserController::class, 'index'])->name('ratings');
     Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+    Route::post('submitdata', [InvoiceController::class, 'submitData']);
+    Route::get('submitdata', [InvoiceController::class, 'submitData']);
 });
 
+Route::get('/customizepackages', [CustomizePackageController::class, 'index']);
+Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
 
-Route::post('submitdata', [InvoiceController::class, 'submitData']);
-Route::get('submitdata', [InvoiceController::class, 'submitData']);
+
 // Route::get('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
 // Route::post('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
 // Route::post('/invoice/proceedPayment', [InvoiceController::class, 'proceedPayment'])->name('invoice.proceedPayment');
