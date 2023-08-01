@@ -153,34 +153,38 @@
                     <div class="col-sm-12">
                         <div class="bg-secondary rounded h-100 p-4">
                           
-                            <h6 class="mb-4">Attendance List</h6>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Designation</th>
-                                            <th>Company Name</th>
-                                            <th>Role</th>
-                                            <th>Present</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($attendances as $attendance)
-                                            <tr>
-                                                <td>{{ $attendance->name }}</td>
-                                                <td>{{ $attendance->designation }}</td>
-                                                <td>{{ $attendance->companyname }}</td>
-                                                <td>{{ $attendance->role }}</td>
-                                                <td>{{ $attendance->present }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <a href="{{ route('attendance.download') }}" class="btn btn-primary">Download CSV</a>
+                        <h6 class="mb-4">Attendance List</h6>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                        <th>Company Name</th>
+                                        <th>Role</th>
+                                        <th>Present</th>
+                                        <th>User</th>
+                                    </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($attendances as $attendance)
+                                    <tr>
+                                        <td>{{ $attendance->name }}</td>
+                                        <td>{{ $attendance->designation }}</td>
+                                        <td>{{ $attendance->companyname }}</td>
+                                        <td>{{ $attendance->role }}</td>
+                                        <td>{{ $attendance->present }}</td>
+                                        <!-- If the user relationship exists, show the user's email and mobile -->
+                                        @if($attendance->user)
+                                        <td>{{ $attendance->user->email }}</td>
+                                        @else
+                                        <td>No User</td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
+                            <a href="{{ route('attendance.download') }}" class="btn btn-primary">Download CSV</a>
                         </div>
-
                     </div>
                 </div>
             </div>

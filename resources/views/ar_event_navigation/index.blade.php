@@ -31,45 +31,45 @@
 <body>
  
     <div class="container-fluid position-relative d-flex p-0">
-        <div class="container-fluid position-relative d-flex p-0">
-            <!-- Spinner Start -->
-            <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-            <!-- Spinner End -->
+        </div>
+        <!-- Spinner End -->
+        
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
             
-            <!-- Sidebar Start -->
-            <div class="sidebar pe-4 pb-3">
-                
-                <nav class="navbar bg-secondary navbar-dark">
-                    <a href="{{asset('index.blade.php')}}" class="navbar-brand mx-4 mb-3">
-                        <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>YFJ</h3>
-                    </a>
-                    <div class="d-flex align-items-center ms-4 mb-4">
-                        <div class="position-relative">
-                            <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0"></h6>
-                            <!-- <span>SuperAdmin Name : </span> -->
-                        </div>
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="{{asset('index.blade.php')}}" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>YFJ</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
-                    <div class="navbar-nav w-100">
-                        <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
-                        <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
-                        <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="{{route('ar_event_navigation.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>arEventNavigation</a>
-                        <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+                    <div class="ms-3">
+                        <h6 class="mb-0"></h6>
+                        <!-- <span>SuperAdmin Name : </span> -->
                     </div>
-                </nav>
-            </div>
-            <!-- Sidebar End -->
-                    <!-- Content Start -->
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
+                    <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
+                    <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
+                    <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
+                    <a href="{{route('ar_event_navigation.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>arEventNavigation</a>
+                    <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+        
+        <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
@@ -83,59 +83,6 @@
                     <input class="form-control bg-dark border-0" type="search" name="query" placeholder="Search">
                 </form> -->
                 <div class="navbar-nav align-items-center ms-auto">
-                    <!-- <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-
-                                    
-                                    <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0"></h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0"></h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div> -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{{asset('panel/img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
@@ -150,6 +97,7 @@
                 </div>
             </nav>
             <!-- Navbar End -->
+
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-14">
@@ -163,7 +111,7 @@
                             <div class="text-center text-sm-end">
                                 <a href="{{ route('ar_event_navigation.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add AR Navigation URL</a>
                             </div>
-                            <h6 class="mb-4">Payment List</h6>
+                            <h6 class="mb-4">AR Event Navigation List</h6>
                             <table class="table table-hover" id="arEventNavigation-table">
                                     <thead>
                                         <tr>
@@ -173,32 +121,38 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($arEventNavigations as $arEventNavigation)
+                                    @foreach ($arEventNavigations->groupBy('event_name') as $eventName => $arEventNavigationGroup)
+                                        @foreach ($arEventNavigationGroup as $arEventNavigation)
                                             <tr>
                                                 <td>{{ $arEventNavigation->event_name }}</td>
                                                 <td>{{ $arEventNavigation->location }}</td>
-                                                <td>{{ $arEventNavigation->ar_navigation_url }}</td>
-                                            </tr>
-                                            
+                                                <td style="word-wrap: break-word; word-break: break-all;">
+                                                    <a href="{{ $arEventNavigation->ar_navigation_url }}" target="_blank">
+                                                        {{ $arEventNavigation->ar_navigation_url }}
+                                                    </a>
+                                                </td>
+                                        @endforeach
                                     @endforeach
                                     </tbody>
-                                    </tr>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Content End -->
 
-              <!-- Back to Top -->
-              <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-            </div>  
-        </div> 
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Template Javascript -->
     <script src="{{asset('panel/js/main.js')}}"></script>
+
 </body>
 
 </html>
-

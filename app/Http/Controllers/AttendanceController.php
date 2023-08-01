@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Auth;
+use App\Models\User;
+
 
 class AttendanceController extends Controller
 {
@@ -26,7 +29,15 @@ class AttendanceController extends Controller
             'present' => 'nullable|boolean',
         ]);
 
-        $attendance = Attendance::create($request->all());
+        // $attendance = Attendance::create($request->all());
+        $user = Auth::guard('api')->user();
+        
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }   // Create the attendance record with the user ID
+        $attendance = $user->attendances()->create($request->all());
+        return response()->json(['message' => 'Attendance recorded successfully', 'data' => $attendance], 201);
+
 
         
     }

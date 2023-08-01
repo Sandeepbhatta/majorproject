@@ -18,5 +18,11 @@ class Attendance extends Model
         'companyname',
         'role',
         'present',
+        'user_id',
+
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

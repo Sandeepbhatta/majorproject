@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-
         Schema::create('attendance', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -20,14 +18,16 @@ return new class extends Migration
             $table->string('companyname');
             $table->string('role');
             $table->boolean('present')->nullable();
-            // New checkbox column (nullable)
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('attendance');
     }
-
 };
