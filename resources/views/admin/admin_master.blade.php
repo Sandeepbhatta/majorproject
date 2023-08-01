@@ -64,6 +64,7 @@
                         <a href="{{route('booking.index')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-file-alt me-2"></i>Invoice</a>
                         <a href="{{route('refunds.displayRefunds')}}" class="nav-item nav-link  "><i class="fa fa-table me-2"></i>Refund</a>
+                        <a href="{{route('ar_event_navigation.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>ar_event_navigation</a>
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Rating & review</a>
                         
                         @if(Auth::guard('admin')->user()->role == "superadmin")

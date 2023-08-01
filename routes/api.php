@@ -11,6 +11,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomizePackageController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ArEventNavigationController;
+
 use App\Http\Controllers\RefundController;
 
 /*
@@ -40,9 +43,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
     Route::post('refund/{booking_id}', 'RefundController@initiateRefund')->name('refund.initiate');
     Route::get('/refunds', [RefundController::class, 'displayRefunds'])->name('refunds.displayRefunds');
-
-
-
+    
+    
+    
     
     Route::get('/package',[PackageController::class, 'getallpackage'])->name('package.get');
     Route::post('/package',[PackageController::class, 'store'])->name('package.store');
@@ -55,6 +58,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('submitdata', [InvoiceController::class, 'submitData']);
     Route::get('/customizepackages', [CustomizePackageController::class, 'index']);
     Route::post('/customizepackages', [CustomizePackageController::class, 'store']);
+    
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('attendance/download', [AttendanceController::class, 'downloadCsv'])->name('attendance.download');
+    Route::post('attendance/store',[AttendanceController::class, 'store'])->name('attendance.store');
+    
+    Route::get('ar_event_navigation', [ArEventNavigationController::class, 'index'])->name('ar_event_navigation.index');
+    Route::get('ar_event_navigation/create', [ArEventNavigationController::class, 'create'])->name('ar_event_navigation.create');
+    Route::post('ar_event_navigation/store', [ArEventNavigationController::class, 'store'])->name('ar_event_navigation.store');
 });
 
 // Route::post('refund/{booking_id}', 'RefundController@initiateRefund')->name('refund.initiate');
@@ -65,6 +76,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Route::post('/invoice', [InvoiceController::class, 'initiatePayment'])->name('invoice.initiatePayment');
 // Route::post('/invoice/proceedPayment', [InvoiceController::class, 'proceedPayment'])->name('invoice.proceedPayment');
 // Route::get('/invoice/verifyPayment', [InvoiceController::class, 'verifyPayment'])->name('invoice.verifypayment');
+
 
 
 

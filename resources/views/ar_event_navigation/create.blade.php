@@ -27,12 +27,15 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('panel/css/style.css')}}" rel="stylesheet">
-
-
+<style>
+    .booked-date {
+        background-color: red;
+        color: white;
+    }
+</style>
 </head>
-
 <body>
-    <div class="container-fluid position-relative d-flex p-0">
+<div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -65,8 +68,8 @@
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
                         <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="{{route('attendance.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Attendance</a>
                         <a href="{{route('ar_event_navigation.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>ar_event_navigation</a>
+
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
@@ -120,7 +123,7 @@
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                            <span class="d-none d-lg-inline-flex">Notification</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
@@ -143,118 +146,69 @@
                 </div>
             </nav>
             <!-- Navbar End -->
+            <!-- Modal -->
 
+                                <h1>Create AR Event Navigation</h1>
 
-            <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
-            @php
-                $bookingStart = now();
-                $bookingEnd = $bookingStart->addMinutes(1);
-
-                session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
-            @endphp
-                <div class="row g-14">
-                    <div class="text-center text-sm-end">
-                        <!-- <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a> -->
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                          
-                            <h6 class="mb-4">Booking List</h6>
-                            <table class="table table-hover" id="booking-table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Booking Date</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
-                                    <th scope="col">Package Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Contact Number</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                @if($bookings->isNotEmpty())
-                                    @foreach($bookings as $booking)
-                                        <tr>
-                                            <td scope="col">{{ $booking->id }}</td>                                
-                                            <td scope="col">{{ $booking->booking_date }}</td>
-                                            <td scope="col">{{ $booking->start_date }}</td>
-                                            <td scope="col">{{ $booking->end_date }}</td>
-                                            @if($booking->package) <!-- Check if the package relationship exists -->
-                                                <td scope="col">{{ $booking->package->name }}</td>
-                                            @else
-                                                <td scope="col">Package not available</td>
-                                            @endif
-
-                                            @if($booking->user) <!-- Check if the user relationship exists -->
-                                                <td scope="col">{{ $booking->user->email }}</td>
-                                                <td scope="col">{{ $booking->user->mobile }}</td>
-                                            @else
-                                                <td scope="col">User not available</td>
-                                                <td scope="col">N/A</td>
-                                            @endif
-                                            <td>
-                                                <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
-                                                <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>
-                                                <form id="booking-edit-action-{{ $booking->id }}" action="{{ route('booking.destroy', $booking->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-
-                                            </td>
-                                            <td>
-                                                @if ($booking->status === 0) <!-- Check if the booking is not already canceled -->
-                                                    <a href="{{ route('booking.cancel', $booking->id) }}" class="btn btn-danger" onclick="event.preventDefault(); if (confirm('Are you sure you want to cancel this booking?')) { document.getElementById('cancel-form-{{ $booking->id }}').submit(); }">Cancel</a>
-                                                    <form id="cancel-form-{{ $booking->id }}" action="{{ route('booking.cancel', $booking->id) }}" method="post" style="display: none;">
-                                                        @csrf
-                                                    </form>
-                                                @else
-                                                    <span class="text-danger"> Canceled</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6">Record Not Found</td>
-                                    </tr>
-                                @endif
-                                </thead>
-                            </table>
+                    <form action="{{ route('ar_event_navigation.store') }}" method="post">
+                        @csrf
+                        <div class="form-group md-4">
+                            <label for="event_name" class="form-label">Event Name:</label>
+                            <input type="text" class="form-control @error('event_name') is-invalid @enderror"
+                                name="event_name" placeholder="text" style="background:white;">
+                            @error('event_name')
+                                <p class="invalid-feedback text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="mt-2">
-                            {{ $bookings->links() }}
+
+                        <div class="form-group md-4">
+                            <label for="location" class="form-label">Location:</label>
+                            <input type="text" class="form-control @error('location') is-invalid @enderror"
+                                name="location" placeholder="text" style="background:white;">
+                            @error('location')
+                                <p class="invalid-feedback text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-                    </div>
+
+                        <div class="form-group md-4">
+                            <label for="ar_navigation_url" class="form-label">Ar Navigation Url:</label>
+                            <input type="url" class="form-control @error('ar_navigation_url') is-invalid @enderror"
+                                name="ar_navigation_url" placeholder="text" style="background:white;">
+                            @error('ar_navigation_url')
+                                <p class="invalid-feedback text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                    
+                    <!-- pop up model end -->
+                    <!-- Footer Start -->
+                    <!-- <div class="container-fluid pt-4 px-4 mt-4">
+                        <div class="bg-secondary rounded-top p-4 mt-3">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 text-center text-sm-start ">
+                                    &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
+                                </div>
+                                <div class="col-12 col-sm-6 text-center text-sm-end">
+                                    Designed By <a href="#">TEAM YFJ</a>
+                                    <br>Distributed By: <a href="#" target="_blank">YFJ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- Footer End -->
                 </div>
+                <!-- Content End -->
+                
+                
+                <!-- Back to Top -->
+                <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
             </div>
-
-            <!-- table ends -->
-            <!-- Footer Start -->
-            <!-- <div class="container-fluid pt-4 px-4 mt-4">
-                <div class="bg-secondary rounded-top p-4 mt-3">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start ">
-                            &copy; <a href="#">YFJ</a>, All Right Reserved. 2023
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            Designed By <a href="#">TEAM YFJ</a>
-                            <br>Distributed By: <a href="#" target="_blank">YFJ</a>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
@@ -264,12 +218,15 @@
     <script src="{{asset('panel/js/main.js')}}"></script>
 
 </body>
+<!-- @push('scripts')
+<script>
+    setTimeout(function() {
+        window.location.href = "{{ route('booking.index') }}";
+    }, 60000); // 60000 milliseconds = 1 minute
+</script>
+@endpush -->
+
 
 </html>
-<script>
-    function deleteBooking(id){
-        if(confirm("Are you sure you want to delete?")){
-           document.getElementById('booking-edit-action-' + id).submit(); 
-        }
-    }
-</script>
+
+

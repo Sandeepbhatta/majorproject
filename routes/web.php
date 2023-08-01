@@ -15,6 +15,8 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CustomizePackageController;
 use App\Http\Controllers\RefundController;
+use App\Http\Controllers\ArEventNavigationController;
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\Admin;
@@ -148,8 +150,20 @@ Route::get('/refunds', [RefundController::class, 'displayRefunds'])->name('refun
 
 
 
+Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('attendance/download', [AttendanceController::class, 'downloadCsv'])->name('attendance.download');
+
+Route::post('attendance/store',[AttendanceController::class, 'store'])->name('attendance.store');
 
 
+
+// routes/web.php
+
+
+Route::get('/ar_event_navigation', [ArEventNavigationController::class, 'index'])->name('ar_event_navigation.index');
+Route::get('/ar_event_navigation/create', [ArEventNavigationController::class, 'create'])->name('ar_event_navigation.create');
+Route::post('ar_event_navigation/store', [ArEventNavigationController::class, 'store'])->name('ar_event_navigation.store');
+Route::post('ar_event_navigation/{areventnavigation}', [ArEventNavigationController::class, 'destory'])->name('ar_event_navigation.destory');
 
 /*---------------rating route ends--------------*/
 

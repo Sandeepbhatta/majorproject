@@ -63,10 +63,9 @@
                         <a href="{{route('admin.dashboard')}}" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="{{route('package.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Package</a>
                         <a href="{{route('category.index')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                        <a href="{{route('booking.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Booking</a>
+                        <a href="{{route('booking.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Booking</a>
                         <a href="{{route('invoice.payment')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Invoice</a>
-                        <a href="{{route('attendance.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Attendance</a>
-                        <a href="{{route('ar_event_navigation.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>ar_event_navigation</a>
+                        <a href="{{route('attendance.index')}}" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Attendance</a>
                         <a href="{{ route('ratings.index')}}" class="nav-item nav-link "><i class="fa fa-table me-2"></i>Ratings & Reviews</a>
 
 
@@ -147,12 +146,6 @@
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
-            @php
-                $bookingStart = now();
-                $bookingEnd = $bookingStart->addMinutes(1);
-
-                session(['booking_start' => $bookingStart, 'booking_end' => $bookingEnd]);
-            @endphp
                 <div class="row g-14">
                     <div class="text-center text-sm-end">
                         <!-- <a href="{{ route('booking.create') }}" class="btn btn-info py-3 w-5 mb-2 col-xl-2">Add Booking</a> -->
@@ -160,71 +153,34 @@
                     <div class="col-sm-12">
                         <div class="bg-secondary rounded h-100 p-4">
                           
-                            <h6 class="mb-4">Booking List</h6>
-                            <table class="table table-hover" id="booking-table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Booking Date</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
-                                    <th scope="col">Package Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Contact Number</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                @if($bookings->isNotEmpty())
-                                    @foreach($bookings as $booking)
+                            <h6 class="mb-4">Attendance List</h6>
+                                <table class="table">
+                                    <thead>
                                         <tr>
-                                            <td scope="col">{{ $booking->id }}</td>                                
-                                            <td scope="col">{{ $booking->booking_date }}</td>
-                                            <td scope="col">{{ $booking->start_date }}</td>
-                                            <td scope="col">{{ $booking->end_date }}</td>
-                                            @if($booking->package) <!-- Check if the package relationship exists -->
-                                                <td scope="col">{{ $booking->package->name }}</td>
-                                            @else
-                                                <td scope="col">Package not available</td>
-                                            @endif
-
-                                            @if($booking->user) <!-- Check if the user relationship exists -->
-                                                <td scope="col">{{ $booking->user->email }}</td>
-                                                <td scope="col">{{ $booking->user->mobile }}</td>
-                                            @else
-                                                <td scope="col">User not available</td>
-                                                <td scope="col">N/A</td>
-                                            @endif
-                                            <td>
-                                                <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-info">Edit</a>
-                                                <a href="#" onClick="deleteBooking({{ $booking->id }})" class="btn btn-primary">Delete</a>
-                                                <form id="booking-edit-action-{{ $booking->id }}" action="{{ route('booking.destroy', $booking->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-
-                                            </td>
-                                            <td>
-                                                @if ($booking->status === 0) <!-- Check if the booking is not already canceled -->
-                                                    <a href="{{ route('booking.cancel', $booking->id) }}" class="btn btn-danger" onclick="event.preventDefault(); if (confirm('Are you sure you want to cancel this booking?')) { document.getElementById('cancel-form-{{ $booking->id }}').submit(); }">Cancel</a>
-                                                    <form id="cancel-form-{{ $booking->id }}" action="{{ route('booking.cancel', $booking->id) }}" method="post" style="display: none;">
-                                                        @csrf
-                                                    </form>
-                                                @else
-                                                    <span class="text-danger"> Canceled</span>
-                                                @endif
-                                            </td>
+                                            <th>Name</th>
+                                            <th>Designation</th>
+                                            <th>Company Name</th>
+                                            <th>Role</th>
+                                            <th>Present</th>
                                         </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6">Record Not Found</td>
-                                    </tr>
-                                @endif
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($attendances as $attendance)
+                                            <tr>
+                                                <td>{{ $attendance->name }}</td>
+                                                <td>{{ $attendance->designation }}</td>
+                                                <td>{{ $attendance->companyname }}</td>
+                                                <td>{{ $attendance->role }}</td>
+                                                <td>{{ $attendance->present }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <a href="{{ route('attendance.download') }}" class="btn btn-primary">Download CSV</a>
                                 </thead>
                             </table>
                         </div>
-                        <div class="mt-2">
-                            {{ $bookings->links() }}
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -266,10 +222,4 @@
 </body>
 
 </html>
-<script>
-    function deleteBooking(id){
-        if(confirm("Are you sure you want to delete?")){
-           document.getElementById('booking-edit-action-' + id).submit(); 
-        }
-    }
-</script>
+

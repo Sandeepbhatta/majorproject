@@ -22,11 +22,8 @@ class RefundController extends Controller
 
     public function initiateRefund($booking)
     {
-        // Logic to check if refund is applicable (e.g., based on booking status)
         if ($booking->status === 0) {
-            // If the booking status indicates a cancellation, proceed with the refund
 
-            // Additional check: Verify if the refund was already initiated or completed
             $existingRefund = Refund::where('id', $booking->id)->first();
             if ($existingRefund) {
                 if ($existingRefund->status === 'completed') {
@@ -36,9 +33,8 @@ class RefundController extends Controller
                 }
             }
 
-            // If refund condition met, initiate refund through eSewa API
             $amount = 200; 
-            $url = 'https://uat.esewa.com.np/epay/transrec';
+            $url = 'https://uat-merchant.esewa.com.np/';
 
             $payload = [
                 'amt' => $amount,
@@ -46,7 +42,6 @@ class RefundController extends Controller
                 'pid' => 'REFUND-' . $booking->id,
                 'scd' => 'EPAYTEST',
                 // Unique payment ID for the refund
-                // Add other required parameters as per eSewa API documentation
             ];
             // Make the refund request using the eSewa API
             $response = Http::post($url, $payload);
@@ -62,7 +57,7 @@ class RefundController extends Controller
                 return response()->json(['message' => 'Refund initiated successfully'], 200);
             } else {
 
-                return false; 
+                return response()->json(['message' => 'Refund Failed'], 200);
             }
         }
 
